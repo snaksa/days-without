@@ -42,7 +42,6 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
           List.from((state as ActivitiesLoadSuccess).activities)
             ..add(event.activity);
 
-
       yield ActivitiesAddSuccess();
       yield ActivitiesLoadSuccess(updatedActivities);
 
@@ -95,13 +94,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
           return activity;
         },
       ).toList();
-  
+
       yield ActivitiesAddDateSuccess();
       yield ActivitiesLoadSuccess(updatedActivities);
     }
   }
 
-    Stream<ActivitiesState> _mapActivityDeletedDateToState(
+  Stream<ActivitiesState> _mapActivityDeletedDateToState(
     ActivityDeletedDate event,
   ) async* {
     if (state is ActivitiesLoadSuccess) {
@@ -118,7 +117,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
           return activity;
         },
       ).toList();
-  
+
       yield ActivitiesLoadSuccess(updatedActivities);
     }
   }

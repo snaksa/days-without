@@ -1,5 +1,5 @@
 import 'package:days_without/data/models/activity.dart';
-import 'package:days_without/data/repositories/database-helper.dart';
+import 'package:days_without/data/repositories/database_helper.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class ActivityRepository {
@@ -19,7 +19,7 @@ class ActivityRepository {
         activity = data[element['id']];
       } else {
         activity = Activity(
-            id: element['id'].toString(), name: element['name'], dates: []);
+            id: element['id'].toString(), name: element['name'], goal: element['goal'], dates: []);
       }
 
       if (element['activity_date'] != null) {

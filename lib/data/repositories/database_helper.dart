@@ -8,8 +8,9 @@ class DatabaseHelper {
 
   Map<int, List<String>> _migrations = {
     1: [
-      "CREATE TABLE activities(id STRING PRIMARY KEY, name TEXT NOT NULL)", // create activities table
+      "CREATE TABLE activities(id STRING PRIMARY KEY, name TEXT NOT NULL, goal INT NOT NULL, category INT NOT NULL)", // create activities table
       "CREATE TABLE activities_dates(activity_id STRING NOT NULL, activity_date INT NOT NULL)", // create dates table
+      "CREATE TABLE user_preferences(name STRING NOT NULL, value INT NOT NULL)", // create user preferences table
     ],
   };
 

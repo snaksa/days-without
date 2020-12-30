@@ -1,13 +1,9 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
-import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
-import 'package:days_without/data/models/activity.dart';
-import 'package:days_without/presentation/components/activity_form.dart';
 import 'package:days_without/presentation/components/activity_tile.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -17,23 +13,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void saveActivity(String name) {
-    BlocProvider.of<ActivitiesBloc>(context).add(
-      ActivityAdded(
-        Activity(
-          id: Uuid().v4(),
-          name: name,
-          dates: [],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Days Without'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => Navigator.pushNamed(context, '/activity-edit'),
+          ),
+        ],
       ),
       body: Center(
         child: BlocConsumer<ActivitiesBloc, ActivitiesState>(
@@ -60,16 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
             return Loader();
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            child: ActivityForm(onSave: this.saveActivity),
-            context: context,
-          );
-        },
-        tooltip: 'Add activity',
-        child: Icon(Icons.add),
       ),
     );
   }

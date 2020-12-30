@@ -2,7 +2,8 @@ import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/simple_block_observer.dart';
 import 'package:days_without/data/repositories/activity_repository.dart';
-import 'package:days_without/data/repositories/database-helper.dart';
+import 'package:days_without/data/repositories/database_helper.dart';
+import 'package:days_without/presentation/screens/activity_edit_screen.dart';
 import 'package:days_without/presentation/screens/activity_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:days_without/presentation/screens/home_screen.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
       ),
       home: HomeScreen(),
       routes: {
-        '/activity': (context) => ActivityScreen(),
+        ActivityScreen.ROUTE_NAME: (context) => ActivityScreen(),
+        ActivityEditScreen.ROUTE_NAME: (context) => ActivityEditScreen(),
       },
     );
   }

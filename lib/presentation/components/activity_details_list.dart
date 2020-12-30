@@ -22,7 +22,8 @@ class ActivityDetailsList extends StatelessWidget {
 
       result.add(
         Dismissible(
-          key: Key("${activity.id}_${activity.dates[i].millisecondsSinceEpoch}"),
+          key:
+              Key("${activity.id}_${activity.dates[i].millisecondsSinceEpoch}"),
           onDismissed: (direction) {
             BlocProvider.of<ActivitiesBloc>(context).add(
               ActivityDeletedDate(this.activity.id, this.activity.dates[i]),
@@ -74,14 +75,26 @@ class ActivityDetailsList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Text(
-                      DateFormat.yMMMd().format(activity.dates[i]),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            Icons.calendar_today_rounded,
+                          ),
+                        ),
+                        Text(
+                          DateFormat.yMMMd().format(activity.dates[i]),
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
                     child: Text(days != null
                         ? "+$days " + (days != 1 ? 'days' : 'day')
-                        : ''),
+                        : '',
+                          style: TextStyle(fontSize: 18),),
                   ),
                 ],
               ),
@@ -96,16 +109,21 @@ class ActivityDetailsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 8),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: this.buildList(context),
-          ),
-        ),
-      ),
-    );
+    final list = this.buildList(context);
+    return list.length > 0
+        ? Container(
+            margin: EdgeInsets.only(top: 8),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: list,
+                ),
+              ),
+            ),
+          )
+        : Container(
+            child: Text('No records'),
+          );
   }
 }
