@@ -1,6 +1,8 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
+import 'package:days_without/bloc/notifications/notifications_bloc.dart';
+import 'package:days_without/bloc/notifications/notifications_event.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/common/alert_dialog/alert_action.dart';
 import 'package:days_without/presentation/components/activity_details_list.dart';
@@ -43,11 +45,26 @@ class _ActivityScreenState extends State<ActivityScreen> {
           return;
         }
 
+        DateTime now = new DateTime.now();
+        DateTime midnight = new DateTime(now.year, now.month, now.day);
+
+        bool exists = false;
+        this._activity.dates.forEach((element) {
+          if (element.millisecondsSinceEpoch ==
+              midnight.millisecondsSinceEpoch) {
+            exists = true;
+          }
+        });
+
+        if (exists) {
+          BlocProvider.of<NotificationsBloc>(context).add(
+            NotificationSend('Date already added', now.millisecondsSinceEpoch),
+          );
+          return;
+        }
+
         BlocProvider.of<ActivitiesBloc>(context).add(
-          ActivityAddDate(
-            this._activity.id,
-            date
-          ),
+          ActivityAddDate(this._activity.id, midnight),
         );
       },
     );
@@ -69,61 +86,63 @@ class _ActivityScreenState extends State<ActivityScreen> {
           return Loader();
         }
 
-        return this._activity == null
-            ? Loader()
-            : Scaffold(
-                appBar: AppBar(
-                  title: Text(this._activity.name),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () => Navigator.pushNamed(
-                        context,
-                        ActivityEditScreen.ROUTE_NAME,
-                        arguments: this._activity.id,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => showDialog(
-                        child: Alert(
-                          title: 'Delete Activity',
-                          content: 'Are you sure?',
-                          actions: [
-                            AlertAction(
-                              title: 'No',
-                              onPressed: () => Navigator.of(context).pop(),
-                            ),
-                            AlertAction(
-                              title: 'Yes',
-                              onPressed: this.deleteActivity,
-                            ),
-                          ],
-                        ),
-                        context: context,
-                      ),
-                    ),
-                  ],
+        if (this._activity == null) {
+          return Loader();
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(this._activity.name),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  ActivityEditScreen.ROUTE_NAME,
+                  arguments: this._activity.id,
                 ),
-                body: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        ActivityTile(this._activity),
-                        ActivityDetailsList(this._activity)
-                      ],
-                    ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => showDialog(
+                  child: Alert(
+                    title: 'Delete Activity',
+                    content: 'Are you sure?',
+                    actions: [
+                      AlertAction(
+                        title: 'No',
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      AlertAction(
+                        title: 'Yes',
+                        onPressed: this.deleteActivity,
+                      ),
+                    ],
                   ),
+                  context: context,
                 ),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: this.chooseDate,
-                  tooltip: 'Add date',
-                  child: Icon(Icons.add),
-                ),
-              );
+              ),
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ActivityTile(this._activity),
+                  ActivityDetailsList(this._activity)
+                ],
+              ),
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: this.chooseDate,
+            tooltip: 'Add date',
+            child: Icon(Icons.add),
+          ),
+        );
       },
     );
   }

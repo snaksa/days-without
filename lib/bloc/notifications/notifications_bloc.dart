@@ -8,13 +8,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   @override
   Stream<NotificationsState> mapEventToState(NotificationsEvent event) async* {
-    if (event is SendNotification) {
+    if (event is NotificationSend) {
       yield* _mapSendNotificationToState(event);
     }
   }
 
   Stream<NotificationsState> _mapSendNotificationToState(
-      SendNotification event) async* {
+      NotificationSend event) async* {
     if (event.text.length > 0) {
       yield NotificationSent(event.text, event.date);
     }

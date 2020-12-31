@@ -1,5 +1,6 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
+import 'package:days_without/presentation/common/no_records.dart';
 import 'package:days_without/presentation/components/activity_tile.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_edit_screen.dart';
@@ -32,25 +33,26 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
           builder: (context, state) {
             if (state is ActivitiesLoadSuccess) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: state.activities.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        ActivityScreen.ROUTE_NAME,
-                        arguments: state.activities[index].id,
-                      ),
-                      child: ActivityTile(
-                        state.activities[index],
-                      ),
-                    );
-                  },
-                ),
-              );
+              return state.activities.length == 0
+                  ? NoRecords(
+                      withImage: true
+                    )
+                  : ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: state.activities.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          ActivityScreen.ROUTE_NAME,
+                          arguments: state.activities[index].id,
+                        ),
+                        child: ActivityTile(
+                          state.activities[index],
+                        ),
+                      );
+                    },
+                  );
             }
 
             return Loader();

@@ -39,7 +39,7 @@ void main() {
             listener: (ctx, ActivitiesState state) {
               if (state is ActivitiesNotification) {
                 BlocProvider.of<NotificationsBloc>(ctx).add(
-                  SendNotification(state.message, state.date),
+                  NotificationSend(state.message, state.date),
                 );
               }
             },
@@ -70,8 +70,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Days Without',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.lightBlue,
+        accentColor: Colors.blue[200],
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryTextTheme: TextTheme(
+          headline6: TextStyle(color: Colors.white),
+        ),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          foregroundColor: Colors.white,
+        ),
+        scaffoldBackgroundColor: Colors.blue[100]
       ),
       home: HomeScreen(),
       routes: {

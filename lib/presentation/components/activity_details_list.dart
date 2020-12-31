@@ -1,6 +1,9 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/data/models/activity.dart';
+import 'package:days_without/presentation/common/alert_dialog/alert_action.dart';
+import 'package:days_without/presentation/common/alert_dialog/alert_dialog.dart';
+import 'package:days_without/presentation/common/no_records.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -31,24 +34,26 @@ class ActivityDetailsList extends StatelessWidget {
           },
           confirmDismiss: (direction) {
             return showDialog(
-                child: AlertDialog(
-                  content: Text("Are you sure?"),
-                  actions: [
-                    FlatButton(
-                      child: Text("No"),
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      },
-                    ),
-                    FlatButton(
-                      child: Text("Yes"),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                    ),
-                  ],
-                ),
-                context: context);
+              child: Alert(
+                title: 'Delete date',
+                content: "Are you sure?",
+                actions: [
+                  AlertAction(
+                    title: "No",
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  AlertAction(
+                    title: "Yes",
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              ),
+              context: context,
+            );
           },
           background: Container(
             color: Colors.red,
@@ -62,12 +67,14 @@ class ActivityDetailsList extends StatelessWidget {
           direction: DismissDirection.startToEnd,
           child: Container(
             decoration: BoxDecoration(
-              border: i == 0 ? null : Border(
-                top: BorderSide(
-                  color: Colors.grey.shade300,
-                  width: 1,
-                ),
-              ),
+              border: i == 0
+                  ? null
+                  : Border(
+                      top: BorderSide(
+                        color: Colors.grey.shade300,
+                        width: 1,
+                      ),
+                    ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -112,6 +119,7 @@ class ActivityDetailsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final list = this.buildList(context);
+
     return list.length > 0
         ? Container(
             margin: EdgeInsets.only(top: 8),
@@ -125,7 +133,7 @@ class ActivityDetailsList extends StatelessWidget {
             ),
           )
         : Container(
-            child: Text('No records'),
+            child: NoRecords(withImage: false),
           );
   }
 }
