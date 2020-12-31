@@ -44,9 +44,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         if (date == null) {
           return;
         }
-
-        DateTime now = new DateTime.now();
-        DateTime midnight = new DateTime(now.year, now.month, now.day);
+        DateTime midnight = new DateTime(date.year, date.month, date.day);
 
         bool exists = false;
         this._activity.dates.forEach((element) {
@@ -58,7 +56,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
         if (exists) {
           BlocProvider.of<NotificationsBloc>(context).add(
-            NotificationSend('Date already added', now.millisecondsSinceEpoch),
+            NotificationSend('Date already added', DateTime.now().millisecondsSinceEpoch),
           );
           return;
         }
