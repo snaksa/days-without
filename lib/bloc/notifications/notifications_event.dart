@@ -8,11 +8,11 @@ abstract class NotificationsEvent extends Equatable {
 }
 
 // Added
-class SendNotification extends NotificationsEvent {
+class NotificationSend extends NotificationsEvent {
   final String text;
   final int date;
 
-  const SendNotification(this.text, this.date);
+  const NotificationSend(this.text, this.date);
   @override
   List<Object> get props => [this.text, this.date];
 
