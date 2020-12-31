@@ -8,5 +8,10 @@ List<Category> categories = [
 ];
 
 Category findCategory(int id) {
+  try {
   return categories.firstWhere((category) => category.id == id);
+  }
+  catch(err) {
+    return Category(0, 'No name', Icons.call, Colors.red);
+  }
 }

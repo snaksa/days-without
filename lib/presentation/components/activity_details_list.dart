@@ -4,6 +4,7 @@ import 'package:days_without/data/models/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class ActivityDetailsList extends StatelessWidget {
   final Activity activity;
@@ -22,8 +23,7 @@ class ActivityDetailsList extends StatelessWidget {
 
       result.add(
         Dismissible(
-          key:
-              Key("${activity.id}_${activity.dates[i].millisecondsSinceEpoch}"),
+          key: Key(Uuid().v4()),
           onDismissed: (direction) {
             BlocProvider.of<ActivitiesBloc>(context).add(
               ActivityDeletedDate(this.activity.id, this.activity.dates[i]),
@@ -62,10 +62,10 @@ class ActivityDetailsList extends StatelessWidget {
           direction: DismissDirection.startToEnd,
           child: Container(
             decoration: BoxDecoration(
-              border: Border(
+              border: i == 0 ? null : Border(
                 top: BorderSide(
                   color: Colors.grey.shade300,
-                  width: i > 0 ? 1 : 0,
+                  width: 1,
                 ),
               ),
             ),
@@ -91,10 +91,12 @@ class ActivityDetailsList extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Text(days != null
-                        ? "+$days " + (days != 1 ? 'days' : 'day')
-                        : '',
-                          style: TextStyle(fontSize: 18),),
+                    child: Text(
+                      days != null
+                          ? "+$days " + (days != 1 ? 'days' : 'day')
+                          : '',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 ],
               ),

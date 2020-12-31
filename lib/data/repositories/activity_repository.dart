@@ -18,8 +18,7 @@ class ActivityRepository {
       if (data.containsKey(element['id'].toString())) {
         activity = data[element['id']];
       } else {
-        activity = Activity(
-            id: element['id'].toString(), name: element['name'], goal: element['goal'], dates: []);
+        activity = Activity.fromMap(element);
       }
 
       if (element['activity_date'] != null) {

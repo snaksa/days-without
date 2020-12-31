@@ -26,6 +26,7 @@ dependencies:
   flutter_bloc: ^6.1.1
   equatable: ^1.2.5
   intl: ^0.15.8
+  fluttertoast: ^7.1.6
   uuid: 2.2.2
   sqflite:
   path:

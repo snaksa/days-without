@@ -25,9 +25,13 @@ class _ActivityEditScreenState extends State<ActivityEditScreen> {
   void saveActivity(String name, int goal, int category) {
     if (this._activity.id != null) {
       BlocProvider.of<ActivitiesBloc>(context).add(
-        ActivityUpdated(this
-            ._activity
-            .copyWith(name: name, goal: goal, category: category)),
+        ActivityUpdated(
+          this._activity.copyWith(
+                name: name,
+                goal: goal,
+                category: category,
+              ),
+        ),
       );
     } else {
       BlocProvider.of<ActivitiesBloc>(context).add(
@@ -63,54 +67,42 @@ class _ActivityEditScreenState extends State<ActivityEditScreen> {
           return Loader();
         }
 
-        return this._activity == null
-            ? Loader()
-            : Scaffold(
-                appBar: AppBar(
-                  title: Text(this._activity.name ?? 'New Activity'),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.save),
-                      onPressed: () {
-                        if (formKey.currentState.validate()) {
-                          formKey.currentState.save();
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(this._activity.name ?? 'New Activity'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.save),
+                onPressed: () {
+                  if (formKey.currentState.validate()) {
+                    formKey.currentState.save();
 
-                          this.saveActivity(
-                              model.name, model.goal, model.category);
-                          Navigator.pop(context);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                body: BlocListener(
-                  cubit: BlocProvider.of<ActivitiesBloc>(context),
-                  listener: (ctx, ActivitiesState state) {
-                    if (state is ActivitiesAddDateSuccess) {
-                      Scaffold.of(ctx)
-                          .showSnackBar(SnackBar(content: Text('Date added')));
-                    }
-                  },
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(16),
-                          child: ActivityForm(
-                            name: this._activity.name,
-                            goal: this._activity.goal,
-                            category: this._activity.category,
-                            formKey: this.formKey,
-                            model: this.model,
-                          ),
-                        ),
-                      ],
-                    ),
+                    this.saveActivity(model.name, model.goal, model.category);
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(16),
+                  child: ActivityForm(
+                    name: this._activity.name,
+                    goal: this._activity.goal,
+                    category: this._activity.category,
+                    formKey: this.formKey,
+                    model: this.model,
                   ),
                 ),
-              );
+              ],
+            ),
+          ),
+        );
       },
     );
   }

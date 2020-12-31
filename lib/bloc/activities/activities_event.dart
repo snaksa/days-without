@@ -21,7 +21,7 @@ class ActivityAdded extends ActivitiesEvent {
   List<Object> get props => [this.activity];
 
   @override
-  String toString() => 'ActivityAdded { todo: ${this.activity} }';
+  String toString() => 'ActivityAdded { activity: ${this.activity} }';
 }
 
 // Updated
@@ -47,7 +47,7 @@ class ActivityDeleted extends ActivitiesEvent {
   List<Object> get props => [this.activity];
 
   @override
-  String toString() => 'ActivityDeleted { todo: ${this.activity} }';
+  String toString() => 'ActivityDeleted { activity: ${this.activity} }';
 }
 
 // Add date

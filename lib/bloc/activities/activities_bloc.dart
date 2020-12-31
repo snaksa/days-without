@@ -73,6 +73,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
 
       this.repository.delete(event.activity);
 
+      yield ActivitiesDeleteSuccess();
       yield ActivitiesLoadSuccess(updatedTodos);
     }
   }
@@ -118,6 +119,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
         },
       ).toList();
 
+      yield ActivitiesDeleteDateSuccess();
       yield ActivitiesLoadSuccess(updatedActivities);
     }
   }
