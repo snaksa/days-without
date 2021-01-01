@@ -68,22 +68,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Days Without',
       theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-        accentColor: Colors.blue[200],
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        primaryTextTheme: TextTheme(
-          headline6: TextStyle(color: Colors.white),
-        ),
-        appBarTheme: AppBarTheme(
-          iconTheme: IconThemeData(color: Colors.white),
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          foregroundColor: Colors.white,
-        ),
-        scaffoldBackgroundColor: Colors.blue[100]
-      ),
+          primarySwatch: Colors.lightBlue,
+          accentColor: Colors.blue[200],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          primaryTextTheme: TextTheme(
+            headline6: TextStyle(color: Colors.white),
+          ),
+          appBarTheme: AppBarTheme(
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            foregroundColor: Colors.white,
+          ),
+          scaffoldBackgroundColor: Colors.blue[100]),
       home: HomeScreen(),
       routes: {
         ActivityScreen.ROUTE_NAME: (context) => ActivityScreen(),

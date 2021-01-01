@@ -1,5 +1,5 @@
 name: days_without
-description: A new Flutter project.
+description: Track your habits day by day
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
