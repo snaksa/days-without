@@ -40,63 +40,52 @@ class ActivityForm extends StatelessWidget {
             },
             onSaved: (value) => model.name = value,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  initialValue: this.goal != null ? this.goal.toString() : '7',
-                  decoration: InputDecoration(
-                    labelText: 'Goal (days)',
-                  ),
-                  keyboardType: TextInputType.number,
-                  validator: (val) {
-                    return val.trim().isEmpty
-                        ? 'Please insert desired goal'
-                        : int.tryParse(val) == null
-                            ? "Please insert valid number"
-                            : null;
-                  },
-                  onSaved: (value) => model.goal = int.parse(value),
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: DropdownButtonFormField(
-                  value: this.category ?? 0,
-                  decoration: InputDecoration(
-                    labelText: 'Category',
-                  ),
-                  items: categories
-                      .map(
-                        (category) => DropdownMenuItem<int>(
-                          value: category.id,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                category.icon,
-                                color: category.color,
-                              ),
-                              Container(
-                                child: Text(category.name),
-                                margin: EdgeInsets.only(left: 4),
-                              ),
-                            ],
-                          ),
+          TextFormField(
+            initialValue: this.goal != null ? this.goal.toString() : '7',
+            decoration: InputDecoration(
+              labelText: 'Goal (days)',
+            ),
+            keyboardType: TextInputType.number,
+            validator: (val) {
+              return val.trim().isEmpty
+                  ? 'Please insert desired goal'
+                  : int.tryParse(val) == null
+                      ? "Please insert valid number"
+                      : null;
+            },
+            onSaved: (value) => model.goal = int.parse(value),
+          ),
+          DropdownButtonFormField(
+            value: this.category ?? 0,
+            decoration: InputDecoration(
+              labelText: 'Category',
+            ),
+            items: categories
+                .map(
+                  (category) => DropdownMenuItem<int>(
+                    value: category.id,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          category.icon,
+                          color: category.color,
                         ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    model.category = value;
-                  },
-                  onSaved: (value) {
-                    model.category = value;
-                  },
-                ),
-              ),
-            ],
+                        Container(
+                          child: Text(category.name),
+                          margin: EdgeInsets.only(left: 4),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              model.category = value;
+            },
+            onSaved: (value) {
+              model.category = value;
+            },
           ),
         ],
       ),

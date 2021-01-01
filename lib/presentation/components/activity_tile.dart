@@ -83,7 +83,8 @@ class ActivityTile extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "Goal: ${this.activity.goal}",
+                                "Goal: ${this.activity.goal} " +
+                                    (this.activity.goal == 1 ? 'day' : 'days'),
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
