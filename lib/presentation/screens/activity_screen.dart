@@ -1,8 +1,6 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
-import 'package:days_without/bloc/notifications/notifications_bloc.dart';
-import 'package:days_without/bloc/notifications/notifications_event.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/common/alert_dialog/alert_action.dart';
 import 'package:days_without/presentation/components/activity_details_list.dart';
@@ -24,6 +22,19 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen> {
   Activity _activity;
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    DateTime now = DateTime.now();
+    this.dateController.text =
+        "${now.day < 10 ? 0 : ''}${now.day}/${now.month < 10 ? 0 : ''}${now.month}/${now.year}";
+    this.timeController.text =
+        "${now.hour < 10 ? 0 : ''}${now.hour}:${now.minute < 10 ? 0 : ''}${now.minute}";
+  }
 
   void deleteActivity() {
     BlocProvider.of<ActivitiesBloc>(context).add(
@@ -34,9 +45,14 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   void chooseDate() {
+    List<String> split = this.dateController.text.split('/');
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateTime(
+        int.parse(split[2]),
+        int.parse(split[1]),
+        int.parse(split[0]),
+      ),
       firstDate: DateTime(1950),
       lastDate: DateTime.now(),
     ).then(
@@ -44,28 +60,95 @@ class _ActivityScreenState extends State<ActivityScreen> {
         if (date == null) {
           return;
         }
-        DateTime midnight = new DateTime(date.year, date.month, date.day);
-
-        bool exists = false;
-        this._activity.dates.forEach((element) {
-          if (element.millisecondsSinceEpoch ==
-              midnight.millisecondsSinceEpoch) {
-            exists = true;
-          }
-        });
-
-        if (exists) {
-          BlocProvider.of<NotificationsBloc>(context).add(
-            NotificationSend('Date already added', DateTime.now().millisecondsSinceEpoch),
-          );
-          return;
-        }
-
-        BlocProvider.of<ActivitiesBloc>(context).add(
-          ActivityAddDate(this._activity.id, midnight),
-        );
+        this.dateController.text =
+            "${date.day < 10 ? 0 : ''}${date.day}/${date.month < 10 ? 0 : ''}${date.month}/${date.year}";
       },
     );
+  }
+
+  void chooseTime() {
+    List<String> split = this.timeController.text.split(':');
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(
+        hour: int.parse(split[0]),
+        minute: int.parse(split[1]),
+      ),
+    ).then(
+      (date) {
+        if (date == null) {
+          return;
+        }
+        this.timeController.text =
+            "${date.hour < 10 ? 0 : ''}${date.hour}:${date.minute < 10 ? 0 : ''}${date.minute}";
+      },
+    );
+  }
+
+  void chooseDateTime() async {
+    await showDialog(
+        context: context,
+        child: Dialog(
+          child: Container(
+            padding: EdgeInsets.all(16.0),
+            child: Form(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () => this.chooseDate(),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Date',
+                      ),
+                      controller: dateController,
+                      enabled: false,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => this.chooseTime(),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Time',
+                      ),
+                      controller: this.timeController,
+                      enabled: false,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      this.addDateTime();
+                      Navigator.pop(context);
+                    },
+                    child: Text('Add'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  void addDateTime() {
+    List<String> splitDate = this.dateController.text.split('/');
+    List<String> splitTime = this.timeController.text.split(':');
+    DateTime date = DateTime(
+      int.parse(splitDate[2]),
+      int.parse(splitDate[1]),
+      int.parse(splitDate[0]),
+      int.parse(splitTime[0]),
+      int.parse(splitTime[1]),
+      DateTime.now().second,
+    );
+    BlocProvider.of<ActivitiesBloc>(context).add(
+      ActivityAddDate(this._activity.id, date),
+    );
+
+    DateTime now = DateTime.now();
+    this.dateController.text =
+        "${now.day < 10 ? 0 : ''}${now.day}/${now.month < 10 ? 0 : ''}${now.month}/${now.year}";
+    this.timeController.text =
+        "${now.hour < 10 ? 0 : ''}${now.hour}:${now.minute < 10 ? 0 : ''}${now.minute}";
   }
 
   @override
@@ -136,7 +219,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: this.chooseDate,
+            onPressed: this.chooseDateTime,
             tooltip: 'Add date',
             child: Icon(Icons.add),
           ),

@@ -43,6 +43,14 @@ class Activity extends Equatable {
     return 0;
   }
 
+  Duration get duration {
+    if (this.dates.length > 0) {
+      return DateTime.now().difference(this.dates.first);
+    }
+
+    return Duration();
+  }
+
   Activity addDate(DateTime date) {
     this.dates.add(date);
     this._sortDates();
@@ -66,7 +74,6 @@ class Activity extends Equatable {
   }
 
   Map<String, dynamic> toMap() {
-    print(this);
     return {
       'id': this.id,
       'name': this.name,

@@ -73,6 +73,7 @@ class ActivityRepository {
 
   Future<void> addDate(Activity activity, DateTime date) async {
     Database database = await this._db.database;
+    print(date.millisecondsSinceEpoch ~/ 1000);
     await database.insert(
       'activities_dates',
       {
@@ -84,6 +85,7 @@ class ActivityRepository {
 
   Future<void> deleteDate(Activity activity, DateTime date) async {
     Database database = await this._db.database;
+    print(date.millisecondsSinceEpoch ~/ 1000);
     await database.delete(
       'activities_dates',
       where: "activity_id = ? AND activity_date = ?",

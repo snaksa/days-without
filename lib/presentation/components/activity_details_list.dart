@@ -91,7 +91,7 @@ class ActivityDetailsList extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormat.yMMMd().format(activity.dates[i]),
+                          DateFormat('dd/MM/y HH:mm').format(activity.dates[i]),
                           style: TextStyle(fontSize: 18),
                         ),
                       ],

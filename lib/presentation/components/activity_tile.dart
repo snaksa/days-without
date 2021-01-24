@@ -1,13 +1,33 @@
+import 'dart:async';
+
 import 'package:days_without/constants/categories.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:flutter/material.dart';
 
-class ActivityTile extends StatelessWidget {
+class ActivityTile extends StatefulWidget {
   final Activity activity;
 
   ActivityTile(this.activity);
 
+  @override
+  _ActivityTileState createState() => _ActivityTileState();
+}
+
+class _ActivityTileState extends State<ActivityTile> {
+  Timer timer;
+  String passedTime;
+
+  @override
+  void initState() {
+    super.initState();
+
+    recalculate();
+    this.timer =
+        Timer.periodic(Duration(seconds: 1), (Timer t) => recalculate());
+  }
+
   final List<double> points = [0.0, 0.7];
+
   final List<List<Color>> colors = [
     [Colors.red[50], Colors.red],
     [Colors.yellow[50], Colors.yellow],
@@ -26,10 +46,37 @@ class ActivityTile extends StatelessWidget {
   }
 
   double getPercent() {
-    double percent =
-        this.activity.days == 0 ? 0 : this.activity.days / this.activity.goal;
+    double percent = this.widget.activity.days == 0
+        ? 0
+        : this.widget.activity.days / this.widget.activity.goal;
 
     return percent > 1 ? 1 : percent;
+  }
+
+  void recalculate() {
+    List<String> passed = [];
+    Duration duration = this.widget.activity.duration;
+    int days = duration.inDays;
+    int hours = duration.inHours - (days * 24);
+    int minutes = duration.inMinutes - (days * 24 * 60 + hours * 60);
+    int seconds = duration.inSeconds -
+        (days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60);
+    if (days > 0) {
+      passed.add('${days}d');
+    }
+    if (hours > 0 || days > 0) {
+      passed.add('${hours < 10 ? 0 : ""}${hours}h');
+    }
+    if (minutes > 0 || days + hours > 0) {
+      passed.add('${minutes < 10 ? 0 : ""}${minutes}m');
+    }
+    if (seconds > 0 || days + hours + minutes > 0) {
+      passed.add('${seconds < 10 ? 0 : ""}${seconds}s');
+    }
+
+    setState(() {
+      passedTime = passed.join(' ');
+    });
   }
 
   @override
@@ -41,9 +88,9 @@ class ActivityTile extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Icon(
-                findCategory(this.activity.category).icon,
+                findCategory(this.widget.activity.category).icon,
                 size: 40,
-                color: findCategory(this.activity.category).color,
+                color: findCategory(this.widget.activity.category).color,
               ),
             ),
           ),
@@ -76,15 +123,17 @@ class ActivityTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                this.activity.name,
+                                this.widget.activity.name,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                "Goal: ${this.activity.goal} " +
-                                    (this.activity.goal == 1 ? 'day' : 'days'),
+                                "Goal: ${this.widget.activity.goal} " +
+                                    (this.widget.activity.goal == 1
+                                        ? 'day'
+                                        : 'days'),
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -93,9 +142,9 @@ class ActivityTile extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            this.activity.days.toString(),
+                            this.passedTime,
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 16,
                             ),
                           ),
                         ],
@@ -109,5 +158,11 @@ class ActivityTile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    this.timer?.cancel();
+    super.dispose();
   }
 }
