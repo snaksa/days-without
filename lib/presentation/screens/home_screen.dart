@@ -34,25 +34,23 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, state) {
             if (state is ActivitiesLoadSuccess) {
               return state.activities.length == 0
-                  ? NoRecords(
-                      withImage: true
-                    )
+                  ? NoRecords(withImage: true)
                   : ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: state.activities.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          ActivityScreen.ROUTE_NAME,
-                          arguments: state.activities[index].id,
-                        ),
-                        child: ActivityTile(
-                          state.activities[index],
-                        ),
-                      );
-                    },
-                  );
+                      padding: const EdgeInsets.all(8),
+                      itemCount: state.activities.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            ActivityScreen.ROUTE_NAME,
+                            arguments: state.activities[index].id,
+                          ),
+                          child: ActivityTile(
+                            state.activities[index],
+                          ),
+                        );
+                      },
+                    );
             }
 
             return Loader();

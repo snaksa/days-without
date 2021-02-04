@@ -65,13 +65,13 @@ class _ActivityTileState extends State<ActivityTile> {
       passed.add('${days}d');
     }
     if (hours > 0 || days > 0) {
-      passed.add('${hours < 10 ? 0 : ""}${hours}h');
+      passed.add('${hours}h');
     }
     if (minutes > 0 || days + hours > 0) {
-      passed.add('${minutes < 10 ? 0 : ""}${minutes}m');
+      passed.add('${minutes}m');
     }
     if (seconds > 0 || days + hours + minutes > 0) {
-      passed.add('${seconds < 10 ? 0 : ""}${seconds}s');
+      passed.add('${seconds < 10 && seconds > 0 ? 0 : ""}${seconds}s');
     }
 
     setState(() {
