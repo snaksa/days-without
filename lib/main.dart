@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
       title: 'Days Without',
       theme: ThemeData(
           primarySwatch: Colors.lightBlue,
-          accentColor: Colors.blue[200],
+          accentColor: Colors.lightBlue[400],
           visualDensity: VisualDensity.adaptivePlatformDensity,
           primaryTextTheme: TextTheme(
             headline6: TextStyle(color: Colors.white),
@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
           floatingActionButtonTheme: FloatingActionButtonThemeData(
             foregroundColor: Colors.white,
           ),
-          scaffoldBackgroundColor: Colors.blue[100]),
+          scaffoldBackgroundColor: Colors.blue[50]),
       home: HomeScreen(),
       routes: {
         ActivityScreen.ROUTE_NAME: (context) => ActivityScreen(),
