@@ -1,4 +1,4 @@
-import 'package:days_without/constants/categories.dart';
+import 'package:days_without/helpers/category_helper.dart';
 import 'package:flutter/material.dart';
 
 class ActivityFormModel {
@@ -60,7 +60,7 @@ class ActivityForm extends StatelessWidget {
             decoration: InputDecoration(
               labelText: 'Category',
             ),
-            items: categories
+            items: CategoryHelper.categories
                 .map(
                   (category) => DropdownMenuItem<int>(
                     value: category.id,

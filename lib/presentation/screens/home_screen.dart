@@ -1,7 +1,7 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/presentation/common/no_records.dart';
-import 'package:days_without/presentation/components/activity_tile.dart';
+import 'package:days_without/presentation/components/activity_tile/activity_tile.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_edit_screen.dart';
 import 'package:days_without/presentation/screens/activity_screen.dart';

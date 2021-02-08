@@ -4,7 +4,7 @@ import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/common/alert_dialog/alert_action.dart';
 import 'package:days_without/presentation/components/activity_details_list.dart';
-import 'package:days_without/presentation/components/activity_tile.dart';
+import 'package:days_without/presentation/components/activity_tile/activity_tile.dart';
 import 'package:days_without/presentation/common/alert_dialog/alert_dialog.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_edit_screen.dart';
