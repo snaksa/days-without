@@ -29,33 +29,51 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
-          builder: (context, state) {
-            if (state is ActivitiesLoadSuccess) {
-              return state.activities.length == 0
-                  ? NoRecords(withImage: true)
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(8),
-                      itemCount: state.activities.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () => Navigator.pushNamed(
-                            context,
-                            ActivityScreen.ROUTE_NAME,
-                            arguments: state.activities[index].id,
-                          ),
-                          child: ActivityTile(
-                            state.activities[index],
-                          ),
-                        );
-                      },
-                    );
-            }
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 12, top: 12),
+            child: FittedBox(
+              child: Text(
+                'I commit to quit:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
+                builder: (context, state) {
+                  if (state is ActivitiesLoadSuccess) {
+                    return state.activities.length == 0
+                        ? NoRecords(withImage: true)
+                        : ListView.builder(
+                            padding: const EdgeInsets.all(8),
+                            itemCount: state.activities.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () => Navigator.pushNamed(
+                                  context,
+                                  ActivityScreen.ROUTE_NAME,
+                                  arguments: state.activities[index].id,
+                                ),
+                                child: ActivityTile(
+                                  state.activities[index],
+                                ),
+                              );
+                            },
+                          );
+                  }
 
-            return Loader();
-          },
-        ),
+                  return Loader();
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

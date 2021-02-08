@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:days_without/constants/categories.dart';
 import 'package:days_without/data/models/activity.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class ActivityTile extends StatefulWidget {
@@ -11,6 +12,14 @@ class ActivityTile extends StatefulWidget {
 
   @override
   _ActivityTileState createState() => _ActivityTileState();
+}
+
+/// Sample data type.
+class GaugeSegment {
+  final String segment;
+  final int size;
+
+  GaugeSegment(this.segment, this.size);
 }
 
 class _ActivityTileState extends State<ActivityTile> {
@@ -79,43 +88,94 @@ class _ActivityTileState extends State<ActivityTile> {
     });
   }
 
+  List<charts.Series<GaugeSegment, String>> _createSampleData() {
+    final data = [
+      new GaugeSegment('Low', 70),
+      new GaugeSegment('Low2', 30),
+    ];
+
+    return [
+      new charts.Series<GaugeSegment, String>(
+        id: 'Segments',
+        domainFn: (GaugeSegment segment, _) => segment.segment,
+        measureFn: (GaugeSegment segment, _) => segment.size,
+        colorFn: (GaugeSegment segment, int n) => n == 0
+            ? charts.MaterialPalette.blue.shadeDefault
+            : charts.MaterialPalette.gray.shade200,
+        data: data,
+      )
+    ];
+  }
+
+  String dropdownValue = 'One';
+
   @override
   Widget build(BuildContext context) {
+    const pi = 3.14;
+    var chart = charts.PieChart(this._createSampleData(),
+        animate: false,
+        defaultRenderer: new charts.ArcRendererConfig(
+          strokeWidthPx: 0.01,
+          arcWidth: 10,
+          startAngle: 4 / 5 * pi,
+          arcLength: 7 / 5 * pi,
+        ));
+
     return Card(
       child: Row(
         children: [
-          Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(
-                findCategory(this.widget.activity.category).icon,
-                size: 40,
-                color: findCategory(this.widget.activity.category).color,
-              ),
-            ),
-          ),
           Expanded(
             child: LayoutBuilder(
               builder: (BuildContext ctx, BoxConstraints constraints) {
-                List<Color> colors = this.getColor();
-                return Stack(
-                  children: [
-                    Positioned.fill(
-                      right: constraints.maxWidth -
-                          (constraints.maxWidth * this.getPercent()),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: colors,
-                            stops: points,
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 8,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  findCategory(this.widget.activity.category)
+                                      .icon,
+                                  size: 32,
+                                  color: findCategory(
+                                          this.widget.activity.category)
+                                      .color,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  this.widget.activity.name,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          PopupMenuButton(
+                            icon: Icon(Icons.menu),
+                            elevation: 16,
+                            itemBuilder: (BuildContext bc) {
+                              return ['1', '2', '3']
+                                  .map((day) => PopupMenuItem(
+                                        child: Text(day),
+                                        value: day,
+                                      ))
+                                  .toList();
+                            },
+                          )
+                        ],
                       ),
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -123,34 +183,61 @@ class _ActivityTileState extends State<ActivityTile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                this.widget.activity.name,
+                                'Abstinence',
                                 style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade500,
+                                  fontSize: 18,
                                 ),
                               ),
                               Text(
-                                "Goal: ${this.widget.activity.goal} " +
-                                    (this.widget.activity.goal == 1
-                                        ? 'day'
-                                        : 'days'),
+                                this.passedTime,
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              SizedBox(
+                                height: 20,
+                              )
                             ],
                           ),
-                          Text(
-                            this.passedTime,
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Stack(children: [
+                                Container(
+                                  child: SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: chart,
+                                  ),
+                                ),
+                                Container(
+                                  child: SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: Center(
+                                      child: Text(
+                                        '12%',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.blue.shade600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                              Container(
+                                child: Text('24 hours'),
+                                transform:
+                                    Matrix4.translationValues(0.0, -30.0, 0.0),
+                              )
+                            ],
+                          )
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             ),
