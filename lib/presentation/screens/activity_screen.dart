@@ -3,7 +3,8 @@ import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/common/alert_dialog/alert_action.dart';
-import 'package:days_without/presentation/components/activity_details_list.dart';
+import 'package:days_without/presentation/common/section_title.dart';
+import 'package:days_without/presentation/components/activity_calendar.dart';
 import 'package:days_without/presentation/components/activity_tile/activity_tile.dart';
 import 'package:days_without/presentation/common/alert_dialog/alert_dialog.dart';
 import 'package:days_without/presentation/components/loader.dart';
@@ -206,17 +207,49 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ],
           ),
           body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: EdgeInsets.all(8),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ActivityTile(this._activity),
-                  ActivityDetailsList(this._activity)
+                children: [
+                  SectionTitle('Overview'),
+                  Center(
+                    child: ActivityTile(this._activity),
+                  ),
+                  SectionTitle('Calendar'),
+                  Card(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Calendar(this._activity),
+                    ),
+                  ),
                 ],
               ),
             ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Overview',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.lightbulb),
+                label: 'Motivation',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.show_chart),
+                label: 'Stats',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.school),
+                label: 'Trophies',
+              ),
+            ],
+            type: BottomNavigationBarType.fixed,
+            currentIndex: 0,
+            selectedItemColor: Colors.blue,
+            onTap: null,
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: this.chooseDateTime,

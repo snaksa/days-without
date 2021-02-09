@@ -74,4 +74,10 @@ class _ActivityTileAbstinenceState extends State<ActivityTileAbstinence> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    this.timer?.cancel();
+    super.dispose();
+  }
 }

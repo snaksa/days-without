@@ -1,6 +1,7 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/presentation/common/no_records.dart';
+import 'package:days_without/presentation/common/section_title.dart';
 import 'package:days_without/presentation/components/activity_tile/activity_tile.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_edit_screen.dart';
@@ -32,17 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.only(left: 12, top: 12),
-            child: FittedBox(
-              child: Text(
-                'I commit to quit:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+          SectionTitle('I commit to quit:'),
           Expanded(
             child: Center(
               child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
