@@ -5,7 +5,7 @@ import 'package:days_without/presentation/common/section_title.dart';
 import 'package:days_without/presentation/components/activity_tile/activity_tile.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_edit_screen.dart';
-import 'package:days_without/presentation/screens/activity_screen.dart';
+import 'package:days_without/presentation/screens/activity_screen/activity_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

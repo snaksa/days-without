@@ -33,12 +33,12 @@ class ActivitiesDeleteSuccess extends ActivitiesNotification {
 
 // Add New Date Success
 class ActivitiesAddDateSuccess extends ActivitiesNotification {
-  ActivitiesAddDateSuccess() : super('Date added');
+  ActivitiesAddDateSuccess() : super('Entry added');
 }
 
 // Delete Date Success
 class ActivitiesDeleteDateSuccess extends ActivitiesNotification {
-  ActivitiesDeleteDateSuccess() : super('Date deleted');
+  ActivitiesDeleteDateSuccess() : super('Entry deleted');
 }
 
 // Successful

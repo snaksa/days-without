@@ -9,6 +9,7 @@ import 'package:days_without/presentation/components/activity_tile/activity_tile
 import 'package:days_without/presentation/common/alert_dialog/alert_dialog.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_edit_screen.dart';
+import 'package:days_without/presentation/screens/activity_screen/tabs/overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -207,25 +208,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ],
           ),
           body: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SectionTitle('Overview'),
-                  Center(
-                    child: ActivityTile(this._activity),
-                  ),
-                  SectionTitle('Calendar'),
-                  Card(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Calendar(this._activity),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: ActivityOverviewTab(this._activity),
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
@@ -250,11 +233,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
             currentIndex: 0,
             selectedItemColor: Colors.blue,
             onTap: null,
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: this.chooseDateTime,
-            tooltip: 'Add date',
-            child: Icon(Icons.add),
           ),
         );
       },

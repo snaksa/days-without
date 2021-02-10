@@ -6,30 +6,30 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 
 class Calendar extends StatelessWidget {
   final Activity activity;
+  final Function onDateClick;
 
   const Calendar(
     this.activity, {
+    this.onDateClick,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CalendarCarousel<Event>(
-      // onDayPressed: (DateTime date, List<Event> events) {
-      //   this.setState(() => _currentDate = date);
-      // },
+      onDayPressed: (DateTime date, List<Event> events) {
+        this.onDateClick(date);
+      },
       weekendTextStyle: TextStyle(
         color: Colors.black,
       ),
       thisMonthDayBorderColor: Colors.grey,
-      //  weekDays: null, /// for pass null when you do not want to render weekDays
-      // headerText: 'Custom Header',
+      todayButtonColor: Colors.grey.shade300,
+      weekdayTextStyle: TextStyle(color: Colors.blue),
 
       height: 400.0,
-      // selectedDateTime: _currentDate,
       daysHaveCircularBorder: null,
       customDayBuilder: (
-        /// you can provide your own build function to make custom day containers
         bool isSelectable,
         int index,
         bool isSelectedDay,
@@ -42,18 +42,30 @@ class Calendar extends StatelessWidget {
       ) {
         Widget widget;
 
-        this.activity.dates.forEach((DateTime date) {
+        DateTime now = DateTime.now();
+        for (DateTime date in this.activity.dates) {
           if (day.day == date.day &&
               day.month == date.month &&
               day.year == date.year) {
-            widget = Center(
+            return Center(
               child: Icon(
                   CategoryHelper.findCategory(this.activity.category).icon,
                   color: CategoryHelper.findCategory(this.activity.category)
                       .color),
             );
           }
-        });
+        }
+
+        if (day.difference(DateTime(now.year, now.month, now.day)).isNegative) {
+          widget = Center(
+            child: Text(
+              day.day.toString(),
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          );
+        }
 
         return widget;
       },
