@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/data/models/trophy.dart';
 import 'package:flutter/material.dart';
 import 'package:days_without/helpers/trophy_helper.dart';
@@ -12,9 +13,9 @@ class GaugeSegment {
 }
 
 class GaugeChart extends StatefulWidget {
-  final Duration duration;
+  final Activity activity;
 
-  GaugeChart(this.duration);
+  GaugeChart(this.activity);
 
   @override
   _GaugeChartState createState() => _GaugeChartState();
@@ -30,15 +31,18 @@ class _GaugeChartState extends State<GaugeChart> {
   void initState() {
     super.initState();
 
-    recalculate();
-    this.timer =
-        Timer.periodic(Duration(seconds: 1), (Timer t) => recalculate());
+    if (this.timer == null) {
+      recalculate();
+      this.timer =
+          Timer.periodic(Duration(seconds: 1), (Timer t) => recalculate());
+    }
   }
 
   void recalculate() {
-    Trophy trophy = TrophyHelper.getTrophy(this.widget.duration);
+    Trophy trophy = TrophyHelper.getTrophy(this.widget.activity.duration);
     double result =
-        (this.widget.duration.inSeconds / trophy.duration.inSeconds) * 100;
+        (this.widget.activity.duration.inSeconds / trophy.duration.inSeconds) *
+            100;
 
     if (this.percentage != null && this.percentage.floor() == result.floor()) {
       return;
@@ -54,16 +58,15 @@ class _GaugeChartState extends State<GaugeChart> {
       if (this.currentTrophy != null && this.currentTrophy.id != trophy.id) {
         animated = true;
       }
-
       percentage = result;
       currentTrophy = trophy;
     });
   }
 
   List<charts.Series<GaugeSegment, String>> getValues(Trophy currentTrophy) {
-    double passedTime =
-        (this.widget.duration.inSeconds / currentTrophy.duration.inSeconds) *
-            100;
+    double passedTime = (this.widget.activity.duration.inSeconds /
+            currentTrophy.duration.inSeconds) *
+        100;
 
     final data = [
       new GaugeSegment('Passed', passedTime.toInt()),

@@ -44,7 +44,7 @@ class _ActivityTileState extends State<ActivityTile> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           ActivityTileAbstinence(widget.activity),
-                          GaugeChart(widget.activity.duration),
+                          GaugeChart(widget.activity),
                         ],
                       ),
                     ],
