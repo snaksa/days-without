@@ -2,7 +2,7 @@ import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/components/activity_tile/_popup_menu.dart';
 import 'package:days_without/presentation/components/activity_tile/_abstinence.dart';
 import 'package:days_without/presentation/components/activity_tile/_header.dart';
-import 'package:days_without/presentation/components/gauge_chart.dart';
+import 'package:days_without/presentation/components/activity_tile/_gauge_chart.dart';
 import 'package:flutter/material.dart';
 
 class ActivityTile extends StatefulWidget {
@@ -36,7 +36,7 @@ class _ActivityTileState extends State<ActivityTile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ActivityTileHeader(widget.activity),
-                          ActivityPopupMenu()
+                          ActivityPopupMenu(widget.activity),
                         ],
                       ),
                       Row(

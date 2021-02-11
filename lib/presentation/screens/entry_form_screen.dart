@@ -1,31 +1,32 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
-import 'package:days_without/presentation/screens/activity_screen/tabs/overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EntryForm extends StatefulWidget {
+class EntryFormScreen extends StatefulWidget {
   static const String ROUTE_NAME = '/activity-new-entry';
 
   @override
-  _EntryFormState createState() => _EntryFormState();
+  _EntryFormScreenState createState() => _EntryFormScreenState();
 }
 
-class PassedData {
+class EntryFormProps {
   String id;
   DateTime date;
+
+  EntryFormProps(this.id, this.date);
 }
 
-class _EntryFormState extends State<EntryForm> {
+class _EntryFormScreenState extends State<EntryFormScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final timeController = TextEditingController();
-  final feelingController = TextEditingController();
+  final commentController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    this.feelingController.text = '';
+    this.commentController.text = '';
 
     DateTime now = DateTime.now();
     this.timeController.text =
@@ -53,7 +54,7 @@ class _EntryFormState extends State<EntryForm> {
   }
 
   void onSave() {
-    var args = ModalRoute.of(context).settings.arguments as Passed;
+    var args = ModalRoute.of(context).settings.arguments as EntryFormProps;
 
     String id = args.id;
     DateTime date = args.date;
@@ -61,9 +62,6 @@ class _EntryFormState extends State<EntryForm> {
     List<String> split = this.timeController.text.split(':');
     DateTime dateToAdd = DateTime(date.year, date.month, date.day,
         int.parse(split[0]), int.parse(split[1]), 0);
-
-    print(id);
-    print(dateToAdd);
 
     BlocProvider.of<ActivitiesBloc>(context).add(
       ActivityAddDate(id, dateToAdd),
@@ -101,7 +99,7 @@ class _EntryFormState extends State<EntryForm> {
               TextFormField(
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
-                controller: this.feelingController,
+                controller: this.commentController,
                 decoration: InputDecoration(
                   labelText: 'How did you feel?',
                 ),

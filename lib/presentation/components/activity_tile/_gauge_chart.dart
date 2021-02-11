@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:days_without/data/models/trophy.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +11,59 @@ class GaugeSegment {
   GaugeSegment(this.segment, this.size);
 }
 
-class GaugeChart extends StatelessWidget {
+class GaugeChart extends StatefulWidget {
   final Duration duration;
 
   GaugeChart(this.duration);
 
+  @override
+  _GaugeChartState createState() => _GaugeChartState();
+}
+
+class _GaugeChartState extends State<GaugeChart> {
+  Timer timer;
+  Trophy currentTrophy;
+  double percentage;
+  bool animated = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    recalculate();
+    this.timer =
+        Timer.periodic(Duration(seconds: 1), (Timer t) => recalculate());
+  }
+
+  void recalculate() {
+    Trophy trophy = TrophyHelper.getTrophy(this.widget.duration);
+    double result =
+        (this.widget.duration.inSeconds / trophy.duration.inSeconds) * 100;
+
+    if (this.percentage != null && this.percentage.floor() == result.floor()) {
+      return;
+    }
+
+    setState(() {
+      // skip first calculation and animate the chart
+      if (this.percentage != null ||
+          (this.currentTrophy != null && this.currentTrophy.id == trophy.id)) {
+        animated = false;
+      }
+
+      if (this.currentTrophy != null && this.currentTrophy.id != trophy.id) {
+        animated = true;
+      }
+
+      percentage = result;
+      currentTrophy = trophy;
+    });
+  }
+
   List<charts.Series<GaugeSegment, String>> getValues(Trophy currentTrophy) {
     double passedTime =
-        (this.duration.inSeconds / currentTrophy.duration.inSeconds) * 100;
+        (this.widget.duration.inSeconds / currentTrophy.duration.inSeconds) *
+            100;
 
     final data = [
       new GaugeSegment('Passed', passedTime.toInt()),
@@ -39,10 +85,6 @@ class GaugeChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Trophy currentTrophy = TrophyHelper.getTrophy(this.duration);
-    double percentage =
-        (this.duration.inSeconds / currentTrophy.duration.inSeconds) * 100;
-
     const pi = 3.14;
 
     return Column(
@@ -54,8 +96,8 @@ class GaugeChart extends StatelessWidget {
               width: 120,
               height: 120,
               child: charts.PieChart(
-                this.getValues(currentTrophy),
-                animate: true,
+                this.getValues(this.currentTrophy),
+                animate: this.animated,
                 defaultRenderer: new charts.ArcRendererConfig(
                   strokeWidthPx: 0.01,
                   arcWidth: 10,
@@ -71,7 +113,7 @@ class GaugeChart extends StatelessWidget {
               height: 120,
               child: Center(
                 child: Text(
-                  "${percentage.floor()}%",
+                  "${this.percentage.floor()}%",
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.blue.shade600,
@@ -87,5 +129,11 @@ class GaugeChart extends StatelessWidget {
         )
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    this.timer?.cancel();
+    super.dispose();
   }
 }

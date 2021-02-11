@@ -1,5 +1,11 @@
-import 'package:days_without/presentation/common/alert_dialog/alert_action.dart';
 import 'package:flutter/material.dart';
+
+class AlertAction {
+  final String title;
+  final Function onPressed;
+
+  AlertAction({this.title, this.onPressed});
+}
 
 class Alert extends StatelessWidget {
   final String title;

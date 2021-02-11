@@ -34,8 +34,8 @@ class NoRecords extends StatelessWidget {
               const Text('button'),
             ],
           ),
-          const Text('to add your first '),
-          const Text('record'),
+          const Text('to get rid of your'),
+          const Text('first addiction'),
         ],
       ),
     );
