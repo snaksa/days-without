@@ -25,7 +25,6 @@ class _GaugeChartState extends State<GaugeChart> {
   Timer timer;
   Trophy currentTrophy;
   double percentage;
-  bool animated = true;
 
   @override
   void initState() {
@@ -49,15 +48,6 @@ class _GaugeChartState extends State<GaugeChart> {
     }
 
     setState(() {
-      // skip first calculation and animate the chart
-      if (this.percentage != null ||
-          (this.currentTrophy != null && this.currentTrophy.id == trophy.id)) {
-        animated = false;
-      }
-
-      if (this.currentTrophy != null && this.currentTrophy.id != trophy.id) {
-        animated = true;
-      }
       percentage = result;
       currentTrophy = trophy;
     });
@@ -100,7 +90,7 @@ class _GaugeChartState extends State<GaugeChart> {
               height: 120,
               child: charts.PieChart(
                 this.getValues(this.currentTrophy),
-                animate: this.animated,
+                animate: false,
                 defaultRenderer: new charts.ArcRendererConfig(
                   strokeWidthPx: 0.01,
                   arcWidth: 10,

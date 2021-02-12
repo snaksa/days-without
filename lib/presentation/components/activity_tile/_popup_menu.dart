@@ -38,7 +38,7 @@ class ActivityPopupMenu extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             builder: (BuildContext context) {
-              return ActivityEdit(this.activity);
+              return ActivityEdit(activity: this.activity);
             },
           );
         } else if (item == 'Delete') {

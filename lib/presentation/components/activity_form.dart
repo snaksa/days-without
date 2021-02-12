@@ -9,15 +9,9 @@ class ActivityFormModel {
 
 class ActivityForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
-  final String name;
-  final int goal;
-  final int category;
   final ActivityFormModel model;
 
   ActivityForm({
-    this.name,
-    this.goal,
-    this.category,
     this.formKey,
     this.model,
   });
@@ -31,32 +25,17 @@ class ActivityForm extends StatelessWidget {
         children: [
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Title',
+              labelText: 'Activity',
             ),
             autofocus: true,
-            initialValue: this.name,
+            initialValue: '',
             validator: (val) {
               return val.trim().isEmpty ? 'Please insert activity name' : null;
             },
             onSaved: (value) => model.name = value,
           ),
-          TextFormField(
-            initialValue: this.goal != null ? this.goal.toString() : '7',
-            decoration: InputDecoration(
-              labelText: 'Goal (days)',
-            ),
-            keyboardType: TextInputType.number,
-            validator: (val) {
-              return val.trim().isEmpty
-                  ? 'Please insert desired goal'
-                  : int.tryParse(val) == null
-                      ? "Please insert valid number"
-                      : null;
-            },
-            onSaved: (value) => model.goal = int.parse(value),
-          ),
           DropdownButtonFormField(
-            value: this.category ?? 0,
+            value: 0,
             decoration: InputDecoration(
               labelText: 'Category',
             ),

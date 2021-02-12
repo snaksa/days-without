@@ -2,9 +2,9 @@ import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/presentation/common/no_records.dart';
 import 'package:days_without/presentation/common/section_title.dart';
+import 'package:days_without/presentation/components/activity_tile/_edit.dart';
 import 'package:days_without/presentation/components/activity_tile/activity_tile.dart';
 import 'package:days_without/presentation/components/loader.dart';
-import 'package:days_without/presentation/screens/activity_edit_screen.dart';
 import 'package:days_without/presentation/screens/activity_screen/activity_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,8 +25,13 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () =>
-                Navigator.pushNamed(context, ActivityEditScreen.ROUTE_NAME),
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                return ActivityEdit();
+              },
+            ),
           ),
         ],
       ),

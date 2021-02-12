@@ -2,9 +2,7 @@ import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/data/models/activity.dart';
-import 'package:days_without/presentation/common/alert_dialog/alert_dialog.dart';
 import 'package:days_without/presentation/components/loader.dart';
-import 'package:days_without/presentation/screens/activity_edit_screen.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/overview/overview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,36 +50,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text(this._activity.name),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  ActivityEditScreen.ROUTE_NAME,
-                  arguments: this._activity.id,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () => showDialog(
-                  child: Alert(
-                    title: 'Delete Activity',
-                    content: 'Are you sure?',
-                    actions: [
-                      AlertAction(
-                        title: 'No',
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      AlertAction(
-                        title: 'Yes',
-                        onPressed: this.deleteActivity,
-                      ),
-                    ],
-                  ),
-                  context: context,
-                ),
-              ),
-            ],
           ),
           body: SingleChildScrollView(
             child: ActivityOverviewTab(this._activity),
