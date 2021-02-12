@@ -22,7 +22,7 @@ class NoRecords extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Text('Click the '),
+              const Text('Press the '),
               Text(
                 '+ ',
                 style: TextStyle(

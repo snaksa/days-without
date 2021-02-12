@@ -1,10 +1,5 @@
-import 'package:days_without/bloc/activities/activities_bloc.dart';
-import 'package:days_without/bloc/activities/activities_event.dart';
-import 'package:days_without/bloc/activities/activities_state.dart';
-import 'package:days_without/bloc/notifications/notifications_bloc.dart';
-import 'package:days_without/bloc/notifications/notifications_event.dart';
-import 'package:days_without/bloc/notifications/notifications_state.dart';
-import 'package:days_without/bloc/simple_block_observer.dart';
+import 'package:days_without/bloc/activities/index.dart';
+import 'package:days_without/bloc/notifications/index.dart';
 import 'package:days_without/data/repositories/activity_repository.dart';
 import 'package:days_without/data/repositories/database_helper.dart';
 import 'package:days_without/presentation/screens/activity_screen/activity_screen.dart';
@@ -15,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
-  Bloc.observer = SimpleBlocObserver();
+  // Bloc.observer = SimpleBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiBlocProvider(
@@ -71,19 +66,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Days Without',
       theme: ThemeData(
-          primarySwatch: Colors.lightBlue,
-          accentColor: Colors.lightBlue[400],
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          primaryTextTheme: TextTheme(
-            headline6: TextStyle(color: Colors.white),
+        primarySwatch: Colors.lightBlue,
+        accentColor: Colors.lightBlue[400],
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        primaryTextTheme: TextTheme(
+          headline6: TextStyle(
+            color: Colors.white,
           ),
-          appBarTheme: AppBarTheme(
-            iconTheme: IconThemeData(color: Colors.white),
-          ),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            foregroundColor: Colors.white,
-          ),
-          scaffoldBackgroundColor: Colors.blue[50]),
+        ),
+        scaffoldBackgroundColor: Colors.blue[50],
+      ),
       home: HomeScreen(),
       routes: {
         ActivityScreen.ROUTE_NAME: (context) => ActivityScreen(),

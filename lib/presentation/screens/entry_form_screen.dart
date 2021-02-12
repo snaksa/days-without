@@ -1,5 +1,4 @@
-import 'package:days_without/bloc/activities/activities_bloc.dart';
-import 'package:days_without/bloc/activities/activities_event.dart';
+import 'package:days_without/bloc/activities/index.dart';
 import 'package:days_without/helpers/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

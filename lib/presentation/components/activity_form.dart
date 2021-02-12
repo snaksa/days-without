@@ -1,5 +1,4 @@
-import 'package:days_without/bloc/activities/activities_bloc.dart';
-import 'package:days_without/bloc/activities/activities_event.dart';
+import 'package:days_without/bloc/activities/index.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/helpers/category_helper.dart';
 import 'package:days_without/helpers/date_helper.dart';
@@ -133,75 +132,72 @@ class _ActivityEditState extends State<ActivityEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Container(
-        height: 300,
-        padding: EdgeInsets.all(16),
-        color: Colors.blue[50],
-        child: SingleChildScrollView(
-          child: Form(
-            key: this.formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+    return Container(
+      height: 300,
+      padding: EdgeInsets.all(16),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SingleChildScrollView(
+        child: Form(
+          key: this.formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                ),
+                controller: this.nameController,
+                validator: (val) {
+                  return val.trim().isEmpty
+                      ? 'Please insert activity name'
+                      : null;
+                },
+              ),
+              DropdownButtonFormField(
+                value: int.parse(this.categoryController.text),
+                decoration: InputDecoration(
+                  labelText: 'Category',
+                ),
+                items: CategoryHelper.categories
+                    .map(
+                      (category) => DropdownMenuItem<int>(
+                        value: category.id,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              category.icon,
+                              color: category.color,
+                            ),
+                            Container(
+                              child: Text(category.name),
+                              margin: EdgeInsets.only(left: 4),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  this.categoryController.text = value.toString();
+                },
+              ),
+              if (widget.activity == null)
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Title',
+                    labelText: 'When was the last time?',
                   ),
-                  controller: this.nameController,
-                  validator: (val) {
-                    return val.trim().isEmpty
-                        ? 'Please insert activity name'
-                        : null;
-                  },
+                  readOnly: true,
+                  onTap: this.chooseDate,
+                  controller: this.dateTimeController,
                 ),
-                DropdownButtonFormField(
-                  value: 0,
-                  decoration: InputDecoration(
-                    labelText: 'Category',
-                  ),
-                  items: CategoryHelper.categories
-                      .map(
-                        (category) => DropdownMenuItem<int>(
-                          value: category.id,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                category.icon,
-                                color: category.color,
-                              ),
-                              Container(
-                                child: Text(category.name),
-                                margin: EdgeInsets.only(left: 4),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    this.categoryController.text = value.toString();
-                  },
-                ),
-                if (widget.activity == null)
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'When was the last time?',
-                    ),
-                    readOnly: true,
-                    onTap: this.chooseDate,
-                    controller: this.dateTimeController,
-                  ),
-                SizedBox(height: 8),
-                Center(
-                  child: ElevatedButton(
-                      child: const Text('Save'), onPressed: this.onSave),
-                )
-              ],
-            ),
+              SizedBox(height: 8),
+              Center(
+                child: ElevatedButton(
+                    child: const Text('Save'), onPressed: this.onSave),
+              )
+            ],
           ),
         ),
       ),

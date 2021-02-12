@@ -1,6 +1,4 @@
-import 'package:days_without/bloc/activities/activities_bloc.dart';
-import 'package:days_without/bloc/activities/activities_event.dart';
-import 'package:days_without/bloc/activities/activities_state.dart';
+import 'package:days_without/bloc/activities/index.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/overview/overview.dart';
@@ -88,7 +86,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ],
             type: BottomNavigationBarType.fixed,
             currentIndex: currentIndex,
-            selectedItemColor: Colors.blue,
+            selectedItemColor: Theme.of(context).primaryColor,
             onTap: (int selected) {
               setState(() {
                 currentIndex = selected;

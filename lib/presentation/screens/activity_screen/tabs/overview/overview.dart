@@ -1,5 +1,4 @@
-import 'package:days_without/bloc/notifications/notifications_bloc.dart';
-import 'package:days_without/bloc/notifications/notifications_event.dart';
+import 'package:days_without/bloc/notifications/index.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/common/section_title.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/overview/calendar.dart';

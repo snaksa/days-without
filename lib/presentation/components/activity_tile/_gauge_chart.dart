@@ -109,7 +109,7 @@ class _GaugeChartState extends State<GaugeChart> {
                   "${this.percentage.floor()}%",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.blue.shade600,
+                    color: Theme.of(context).accentColor,
                   ),
                 ),
               ),

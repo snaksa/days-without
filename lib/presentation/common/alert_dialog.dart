@@ -26,8 +26,11 @@ class Alert extends StatelessWidget {
       actions: this
           .actions
           .map(
-            (AlertAction action) => FlatButton(
+            (AlertAction action) => TextButton(
               child: Text(action.title),
+              style: TextButton.styleFrom(
+                primary: Theme.of(context).accentColor,
+              ),
               onPressed: action.onPressed,
             ),
           )

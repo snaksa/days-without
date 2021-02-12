@@ -24,8 +24,8 @@ class Calendar extends StatelessWidget {
         color: Colors.black,
       ),
       thisMonthDayBorderColor: Colors.grey,
-      todayButtonColor: Colors.grey.shade300,
-      weekdayTextStyle: TextStyle(color: Colors.blue),
+      todayButtonColor: Theme.of(context).accentColor.withOpacity(0.2),
+      weekdayTextStyle: TextStyle(color: Theme.of(context).accentColor),
 
       height: 400.0,
       daysHaveCircularBorder: null,
@@ -40,9 +40,20 @@ class Calendar extends StatelessWidget {
         bool isThisMonthDay,
         DateTime day,
       ) {
-        Widget widget;
+        if (this.activity.dates.length > 0) {
+          DateTime startDate = this.activity.dates.last;
+          if (day.day == startDate.day &&
+              day.month == startDate.month &&
+              day.year == startDate.year) {
+            return Center(
+              child: Icon(
+                Icons.api,
+                color: Colors.red,
+              ),
+            );
+          }
+        }
 
-        DateTime now = DateTime.now();
         for (DateTime date in this.activity.dates) {
           if (day.day == date.day &&
               day.month == date.month &&
@@ -56,6 +67,8 @@ class Calendar extends StatelessWidget {
           }
         }
 
+        Widget widget;
+        DateTime now = DateTime.now();
         if (day.difference(DateTime(now.year, now.month, now.day)).isNegative) {
           widget = Center(
             child: Text(

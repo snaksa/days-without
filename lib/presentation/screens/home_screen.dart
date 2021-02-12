@@ -1,5 +1,4 @@
-import 'package:days_without/bloc/activities/activities_bloc.dart';
-import 'package:days_without/bloc/activities/activities_state.dart';
+import 'package:days_without/bloc/activities/index.dart';
 import 'package:days_without/presentation/common/no_records.dart';
 import 'package:days_without/presentation/common/section_title.dart';
 import 'package:days_without/presentation/components/activity_form.dart';
@@ -35,41 +34,31 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle('I commit to quit:'),
-          Expanded(
-            child: Center(
-              child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
-                builder: (context, state) {
-                  if (state is ActivitiesLoadSuccess) {
-                    return state.activities.length == 0
-                        ? NoRecords(withImage: true)
-                        : ListView.builder(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: state.activities.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () => Navigator.pushNamed(
-                                  context,
-                                  ActivityScreen.ROUTE_NAME,
-                                  arguments: state.activities[index].id,
-                                ),
-                                child: ActivityTile(
-                                  state.activities[index],
-                                ),
-                              );
-                            },
-                          );
-                  }
+      body: BlocBuilder<ActivitiesBloc, ActivitiesState>(
+        builder: (context, state) {
+          if (state is ActivitiesLoadSuccess) {
+            return state.activities.length == 0
+                ? NoRecords(withImage: true)
+                : ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: state.activities.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          ActivityScreen.ROUTE_NAME,
+                          arguments: state.activities[index].id,
+                        ),
+                        child: ActivityTile(
+                          state.activities[index],
+                        ),
+                      );
+                    },
+                  );
+          }
 
-                  return Loader();
-                },
-              ),
-            ),
-          ),
-        ],
+          return Loader();
+        },
       ),
     );
   }

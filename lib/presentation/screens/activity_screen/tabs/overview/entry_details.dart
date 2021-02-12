@@ -1,6 +1,5 @@
-import 'package:days_without/bloc/activities/activities_bloc.dart';
-import 'package:days_without/bloc/activities/activities_event.dart';
-import 'package:days_without/presentation/common/alert_dialog/alert_dialog.dart';
+import 'package:days_without/bloc/activities/index.dart';
+import 'package:days_without/presentation/common/alert_dialog.dart';
 import 'package:days_without/presentation/screens/activity_screen/activity_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +52,7 @@ class EntryDetails extends StatelessWidget {
     return Container(
       height: 200,
       padding: EdgeInsets.all(16),
-      color: Colors.blue[50],
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -94,9 +93,15 @@ class EntryDetails extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Container(
-            child: RaisedButton(
+            child: ElevatedButton(
               onPressed: () => this.deleteEntry(context),
-              child: Text('Delete'),
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).accentColor,
+                onPrimary: Colors.white,
+              ),
+              child: Text(
+                'Delete',
+              ),
             ),
           )
         ],

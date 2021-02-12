@@ -12,7 +12,7 @@ final List<Map<String, dynamic>> stats = [
         return DateFormat.yMMMd().format(firstDate);
       }
 
-      return '';
+      return '-';
     }
   },
   {

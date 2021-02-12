@@ -14,7 +14,7 @@ class EntriesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 400,
-      color: Colors.blue[50],
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -79,6 +79,10 @@ class EntriesList extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 child: const Text('New Entry'),
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).accentColor,
+                  onPrimary: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
