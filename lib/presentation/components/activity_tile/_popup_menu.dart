@@ -43,7 +43,7 @@ class ActivityPopupMenu extends StatelessWidget {
           );
         } else if (item == 'Delete') {
           showDialog(
-            child: Alert(
+            builder: (ctx) => Alert(
               title: 'Delete Activity',
               content: 'Are you sure?',
               actions: [

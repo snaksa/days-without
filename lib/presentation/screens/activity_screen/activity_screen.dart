@@ -4,6 +4,7 @@ import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/overview/overview.dart';
+import 'package:days_without/presentation/screens/activity_screen/tabs/stats/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +19,7 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen> {
   Activity _activity;
+  int currentIndex = 0;
 
   void deleteActivity() {
     BlocProvider.of<ActivitiesBloc>(context).add(
@@ -25,6 +27,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
     );
 
     Navigator.of(context).popUntil((t) => t.settings.name == '/');
+  }
+
+  Widget currentTab() {
+    switch (this.currentIndex) {
+      case 0:
+        return ActivityOverviewTab(this._activity);
+      case 2:
+        return ActivityStatsTab(this._activity);
+      default:
+        return ActivityOverviewTab(this._activity);
+    }
   }
 
   @override
@@ -52,7 +65,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             title: Text(this._activity.name),
           ),
           body: SingleChildScrollView(
-            child: ActivityOverviewTab(this._activity),
+            child: this.currentTab(),
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
@@ -74,9 +87,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ),
             ],
             type: BottomNavigationBarType.fixed,
-            currentIndex: 0,
+            currentIndex: currentIndex,
             selectedItemColor: Colors.blue,
-            onTap: null,
+            onTap: (int selected) {
+              setState(() {
+                currentIndex = selected;
+              });
+            },
           ),
         );
       },

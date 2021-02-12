@@ -14,7 +14,7 @@ class EntryDetails extends StatelessWidget {
 
   Future deleteEntry(BuildContext context) {
     return showDialog(
-      child: Alert(
+      builder: (ctx) => Alert(
         title: 'Delete entry',
         content: "Are you sure?",
         actions: [

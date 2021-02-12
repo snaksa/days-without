@@ -33,7 +33,7 @@ class ActivityDetailsList extends StatelessWidget {
           },
           confirmDismiss: (direction) {
             return showDialog(
-              child: Alert(
+              builder: (ctx) => Alert(
                 title: 'Delete date',
                 content: "Are you sure?",
                 actions: [
