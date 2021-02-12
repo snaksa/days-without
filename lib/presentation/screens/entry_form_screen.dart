@@ -1,5 +1,6 @@
 import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
+import 'package:days_without/helpers/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,7 +31,7 @@ class _EntryFormScreenState extends State<EntryFormScreen> {
 
     DateTime now = DateTime.now();
     this.timeController.text =
-        "${now.hour < 10 ? 0 : ''}${now.hour}:${now.minute < 10 ? 0 : ''}${now.minute}";
+        DateHelper.convertTimeToString(now.hour, now.minute);
   }
 
   void chooseTime() {
@@ -48,7 +49,7 @@ class _EntryFormScreenState extends State<EntryFormScreen> {
         }
 
         this.timeController.text =
-            "${date.hour < 10 ? 0 : ''}${date.hour}:${date.minute < 10 ? 0 : ''}${date.minute}";
+            DateHelper.convertTimeToString(date.hour, date.minute);
       },
     );
   }

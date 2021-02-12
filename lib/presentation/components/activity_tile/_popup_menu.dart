@@ -2,7 +2,7 @@ import 'package:days_without/bloc/activities/activities_bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/common/alert_dialog/alert_dialog.dart';
-import 'package:days_without/presentation/components/activity_tile/_edit.dart';
+import 'package:days_without/presentation/components/activity_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

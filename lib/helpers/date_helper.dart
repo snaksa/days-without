@@ -21,4 +21,8 @@ class DateHelper {
 
     return passed.join(' ');
   }
+
+  static String convertTimeToString(int hour, int minute) {
+    return "${hour < 10 ? 0 : ''}$hour:${minute < 10 ? 0 : ''}$minute";
+  }
 }
