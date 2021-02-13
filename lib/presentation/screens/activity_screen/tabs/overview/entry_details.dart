@@ -1,4 +1,5 @@
 import 'package:days_without/bloc/activities/index.dart';
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:days_without/presentation/common/alert_dialog.dart';
 import 'package:days_without/presentation/screens/activity_screen/activity_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:intl/intl.dart';
 
 class EntryDetails extends StatelessWidget {
   final String activityId;
-  final DateTime date;
+  final ActivityDate date;
 
   EntryDetails(this.activityId, this.date);
 
@@ -29,7 +30,7 @@ class EntryDetails extends StatelessWidget {
               BlocProvider.of<ActivitiesBloc>(context).add(
                 ActivityDeletedDate(
                   this.activityId,
-                  this.date,
+                  this.date.date,
                 ),
               );
 
@@ -66,7 +67,7 @@ class EntryDetails extends StatelessWidget {
                       Icon(Icons.access_time),
                       SizedBox(width: 8),
                       Text(
-                        DateFormat('HH:mm').format(this.date),
+                        DateFormat('HH:mm').format(this.date.date),
                         style: TextStyle(fontSize: 18),
                       ),
                     ],
@@ -79,7 +80,7 @@ class EntryDetails extends StatelessWidget {
                       SizedBox(width: 8),
                       Flexible(
                         child: Text(
-                          'TODO: implement comments',
+                          this.date.comment ?? 'No comment',
                           style: TextStyle(
                             fontSize: 18,
                           ),

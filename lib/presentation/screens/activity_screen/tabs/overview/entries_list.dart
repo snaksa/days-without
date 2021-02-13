@@ -1,4 +1,5 @@
 import 'package:days_without/data/models/activity.dart';
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:days_without/presentation/screens/entry_form_screen.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/overview/entry_details.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +38,11 @@ class EntriesList extends StatelessWidget {
                 .activity
                 .dates
                 .where(
-                  (DateTime d) => (date.day == d.day &&
-                      date.month == d.month &&
-                      date.year == d.year),
+                  (ActivityDate d) => (date.day == d.date.day &&
+                      date.month == d.date.month &&
+                      date.year == d.date.year),
                 )
-                .map((DateTime d) {
+                .map((ActivityDate d) {
               return GestureDetector(
                 onTap: () {
                   showModalBottomSheet<void>(
@@ -63,7 +64,7 @@ class EntriesList extends StatelessWidget {
                                 Icon(Icons.access_time),
                                 SizedBox(width: 8),
                                 Text(
-                                  DateFormat('HH:mm').format(d),
+                                  DateFormat('HH:mm').format(d.date),
                                   style: TextStyle(fontSize: 18),
                                 ),
                               ],

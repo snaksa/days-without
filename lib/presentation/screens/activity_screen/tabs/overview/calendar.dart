@@ -1,4 +1,5 @@
 import 'package:days_without/data/models/activity.dart';
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:days_without/helpers/category_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -26,7 +27,6 @@ class Calendar extends StatelessWidget {
       thisMonthDayBorderColor: Colors.grey,
       todayButtonColor: Theme.of(context).accentColor.withOpacity(0.2),
       weekdayTextStyle: TextStyle(color: Theme.of(context).accentColor),
-
       height: 400.0,
       daysHaveCircularBorder: null,
       customDayBuilder: (
@@ -41,7 +41,7 @@ class Calendar extends StatelessWidget {
         DateTime day,
       ) {
         if (this.activity.dates.length > 0) {
-          DateTime startDate = this.activity.dates.last;
+          DateTime startDate = this.activity.dates.last.date;
           if (day.day == startDate.day &&
               day.month == startDate.month &&
               day.year == startDate.year) {
@@ -54,10 +54,10 @@ class Calendar extends StatelessWidget {
           }
         }
 
-        for (DateTime date in this.activity.dates) {
-          if (day.day == date.day &&
-              day.month == date.month &&
-              day.year == date.year) {
+        for (ActivityDate activityDate in this.activity.dates) {
+          if (day.day == activityDate.date.day &&
+              day.month == activityDate.date.month &&
+              day.year == activityDate.date.year) {
             return Center(
               child: Icon(
                   CategoryHelper.findCategory(this.activity.category).icon,
@@ -82,8 +82,6 @@ class Calendar extends StatelessWidget {
 
         return widget;
       },
-
-      /// null for not rendering any border, true for circular border, false for rectangular border
     );
   }
 }

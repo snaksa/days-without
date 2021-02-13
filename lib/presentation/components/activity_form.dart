@@ -122,7 +122,7 @@ class _ActivityEditState extends State<ActivityEdit> {
             int.parse(splitTime[1]));
 
         BlocProvider.of<ActivitiesBloc>(context).add(
-          ActivityAddDate(activityId, dateToAdd),
+          ActivityAddDate(activityId, dateToAdd, null),
         );
       }
 
@@ -195,7 +195,13 @@ class _ActivityEditState extends State<ActivityEdit> {
               SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
-                    child: const Text('Save'), onPressed: this.onSave),
+                  child: const Text('Save'),
+                  onPressed: this.onSave,
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).accentColor,
+                    onPrimary: Colors.white,
+                  ),
+                ),
               )
             ],
           ),

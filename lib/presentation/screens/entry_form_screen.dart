@@ -63,9 +63,12 @@ class _EntryFormScreenState extends State<EntryFormScreen> {
     DateTime dateToAdd = DateTime(date.year, date.month, date.day,
         int.parse(split[0]), int.parse(split[1]), 0);
 
-    BlocProvider.of<ActivitiesBloc>(context).add(
-      ActivityAddDate(id, dateToAdd),
-    );
+    String comment = this.commentController.text.length > 0
+        ? this.commentController.text
+        : null;
+
+    BlocProvider.of<ActivitiesBloc>(context)
+        .add(ActivityAddDate(id, dateToAdd, comment));
 
     Navigator.of(context).pop();
   }

@@ -1,3 +1,4 @@
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:days_without/helpers/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,8 +7,8 @@ final List<Map<String, dynamic>> stats = [
   {
     'title': 'The day you quit',
     'icon': Icons.calendar_today,
-    'calculate': (List<DateTime> dates) {
-      DateTime firstDate = dates.length > 0 ? dates.last : null;
+    'calculate': (List<ActivityDate> dates) {
+      DateTime firstDate = dates.length > 0 ? dates.last.date : null;
       if (firstDate != null) {
         return DateFormat.yMMMd().format(firstDate);
       }
@@ -18,7 +19,7 @@ final List<Map<String, dynamic>> stats = [
   {
     'title': 'Max abstinence period',
     'icon': Icons.hourglass_bottom,
-    'calculate': (List<DateTime> dates) {
+    'calculate': (List<ActivityDate> dates) {
       if (dates.length == 0) {
         return '-';
       }
@@ -26,12 +27,15 @@ final List<Map<String, dynamic>> stats = [
       Duration maxDuration = Duration();
 
       if (dates.length == 1) {
-        maxDuration = DateTime.now().difference(dates.first);
+        maxDuration = DateTime.now().difference(dates.first.date);
       } else {
-        List<DateTime> datesWithToday = [DateTime.now(), ...dates];
+        List<ActivityDate> datesWithToday = [
+          ActivityDate('0', DateTime.now(), null),
+          ...dates
+        ];
         for (int i = 1; i < datesWithToday.length; i++) {
           Duration datesDifference =
-              datesWithToday[i - 1].difference(datesWithToday[i]);
+              datesWithToday[i - 1].date.difference(datesWithToday[i].date);
 
           if (datesDifference > maxDuration) {
             maxDuration = datesDifference;
@@ -45,7 +49,7 @@ final List<Map<String, dynamic>> stats = [
   {
     'title': 'Min abstinence period',
     'icon': Icons.hourglass_top,
-    'calculate': (List<DateTime> dates) {
+    'calculate': (List<ActivityDate> dates) {
       if (dates.length == 0) {
         return '-';
       }
@@ -53,12 +57,15 @@ final List<Map<String, dynamic>> stats = [
       Duration minDuration;
 
       if (dates.length == 1) {
-        minDuration = DateTime.now().difference(dates.first);
+        minDuration = DateTime.now().difference(dates.first.date);
       } else {
-        List<DateTime> datesWithToday = [DateTime.now(), ...dates];
+        List<ActivityDate> datesWithToday = [
+          ActivityDate('0', DateTime.now(), null),
+          ...dates
+        ];
         for (int i = 1; i < datesWithToday.length; i++) {
           Duration datesDifference =
-              datesWithToday[i - 1].difference(datesWithToday[i]);
+              datesWithToday[i - 1].date.difference(datesWithToday[i].date);
           if (minDuration == null || datesDifference < minDuration) {
             minDuration = datesDifference;
           }
@@ -71,16 +78,19 @@ final List<Map<String, dynamic>> stats = [
   {
     'title': 'Average abstinence period',
     'icon': Icons.hourglass_empty,
-    'calculate': (List<DateTime> dates) {
+    'calculate': (List<ActivityDate> dates) {
       if (dates.length == 0) {
         return '-';
       }
 
       Duration totalDuration = Duration();
-      List<DateTime> datesWithToday = [DateTime.now(), ...dates];
+      List<ActivityDate> datesWithToday = [
+        ActivityDate('0', DateTime.now(), null),
+        ...dates
+      ];
       for (int i = 1; i < datesWithToday.length; i++) {
         Duration datesDifference =
-            datesWithToday[i - 1].difference(datesWithToday[i]);
+            datesWithToday[i - 1].date.difference(datesWithToday[i].date);
         totalDuration += datesDifference;
       }
 
@@ -94,11 +104,11 @@ final List<Map<String, dynamic>> stats = [
   {
     'title': 'Previous abstinence period',
     'icon': Icons.access_time,
-    'calculate': (List<DateTime> dates) {
+    'calculate': (List<ActivityDate> dates) {
       if (dates.length <= 1) {
         return '-';
       }
-      Duration datesDifference = dates[0].difference(dates[1]);
+      Duration datesDifference = dates[0].date.difference(dates[1].date);
       return DateHelper.convertDurationToString(datesDifference);
     }
   },
@@ -106,7 +116,7 @@ final List<Map<String, dynamic>> stats = [
     'title': 'Number of resets',
     'icon': Icons.loop,
     'hideBorder': true,
-    'calculate': (List<DateTime> dates) {
+    'calculate': (List<ActivityDate> dates) {
       return dates.length;
     }
   }

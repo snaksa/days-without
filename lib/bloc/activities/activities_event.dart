@@ -54,14 +54,16 @@ class ActivityDeleted extends ActivitiesEvent {
 class ActivityAddDate extends ActivitiesEvent {
   final String id;
   final DateTime date;
+  final String comment;
 
-  const ActivityAddDate(this.id, this.date);
-
-  @override
-  List<Object> get props => [this.id, this.date];
+  const ActivityAddDate(this.id, this.date, this.comment);
 
   @override
-  String toString() => 'ActivityAddDate { addDate: ${this.id}, ${this.date} }';
+  List<Object> get props => [this.id, this.date, this.comment];
+
+  @override
+  String toString() =>
+      'ActivityAddDate { addDate: ${this.id}, ${this.date}, ${this.comment} }';
 }
 
 // Add date

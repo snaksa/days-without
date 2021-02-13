@@ -1,4 +1,5 @@
 import 'package:days_without/data/models/activity.dart';
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:days_without/data/repositories/database_helper.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -22,8 +23,10 @@ class ActivityRepository {
       }
 
       if (element['activity_date'] != null) {
-        DateTime date = DateTime.fromMillisecondsSinceEpoch(
+        DateTime parsedDate = DateTime.fromMillisecondsSinceEpoch(
             int.parse(element['activity_date'].toString()) * 1000);
+        ActivityDate date = ActivityDate(
+            element['activity_id'], parsedDate, element['activity_comment']);
         activity.addDate(date);
       }
 
@@ -71,14 +74,15 @@ class ActivityRepository {
     );
   }
 
-  Future<void> addDate(Activity activity, DateTime date) async {
+  Future<void> addDate(Activity activity, DateTime date, String comment) async {
     Database database = await this._db.database;
     print(date.millisecondsSinceEpoch ~/ 1000);
     await database.insert(
       'activities_dates',
       {
         'activity_id': activity.id,
-        'activity_date': date.millisecondsSinceEpoch ~/ 1000
+        'activity_date': date.millisecondsSinceEpoch ~/ 1000,
+        'activity_comment': comment,
       },
     );
   }

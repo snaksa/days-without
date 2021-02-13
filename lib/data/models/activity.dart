@@ -1,3 +1,4 @@
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:equatable/equatable.dart';
 
 class Activity extends Equatable {
@@ -5,7 +6,7 @@ class Activity extends Equatable {
   final String name;
   final int goal;
   final int category;
-  final List<DateTime> dates;
+  final List<ActivityDate> dates;
 
   Activity({this.id, this.name, this.goal, this.category, this.dates}) {
     this._sortDates();
@@ -37,7 +38,7 @@ class Activity extends Equatable {
 
   int get days {
     if (this.dates.length > 0) {
-      return DateTime.now().difference(this.dates.first).inDays;
+      return DateTime.now().difference(this.dates.first.date).inDays;
     }
 
     return 0;
@@ -45,13 +46,13 @@ class Activity extends Equatable {
 
   Duration get duration {
     if (this.dates.length > 0) {
-      return DateTime.now().difference(this.dates.first);
+      return DateTime.now().difference(this.dates.first.date);
     }
 
     return Duration();
   }
 
-  Activity addDate(DateTime date) {
+  Activity addDate(ActivityDate date) {
     this.dates.add(date);
     this._sortDates();
 
@@ -60,7 +61,7 @@ class Activity extends Equatable {
 
   Activity removeDate(DateTime date) {
     this.dates.removeWhere((element) =>
-        element.millisecondsSinceEpoch == date.millisecondsSinceEpoch);
+        element.date.millisecondsSinceEpoch == date.millisecondsSinceEpoch);
     this._sortDates();
 
     return this;
@@ -68,8 +69,8 @@ class Activity extends Equatable {
 
   void _sortDates() {
     this.dates.sort(
-          (DateTime d1, DateTime d2) =>
-              d1.difference(d2).inSeconds > 0 ? -1 : 1,
+          (ActivityDate d1, ActivityDate d2) =>
+              d1.date.difference(d2.date).inSeconds > 0 ? -1 : 1,
         );
   }
 

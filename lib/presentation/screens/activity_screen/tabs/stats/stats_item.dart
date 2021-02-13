@@ -1,8 +1,9 @@
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:flutter/material.dart';
 
 class StatsItem extends StatelessWidget {
   final Map<String, dynamic> item;
-  final List<DateTime> dates;
+  final List<ActivityDate> dates;
 
   StatsItem(this.item, this.dates);
 

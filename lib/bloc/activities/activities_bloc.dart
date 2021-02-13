@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/data/models/activity.dart';
+import 'package:days_without/data/models/activity_date.dart';
 import 'package:days_without/data/repositories/activity_repository.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
@@ -87,8 +88,8 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
           (state as ActivitiesLoadSuccess).activities.map(
         (activity) {
           if (activity.id == event.id) {
-            activity.addDate(event.date);
-            this.repository.addDate(activity, event.date);
+            activity.addDate(ActivityDate(event.id, event.date, event.comment));
+            this.repository.addDate(activity, event.date, event.comment);
             return activity;
           }
 

@@ -16,10 +16,10 @@ class ActivityDetailsList extends StatelessWidget {
     List<Widget> result = [];
     for (int i = 0; i < activity.dates.length; i++) {
       DateTime nextDate =
-          i < activity.dates.length - 1 ? activity.dates[i + 1] : null;
+          i < activity.dates.length - 1 ? activity.dates[i + 1].date : null;
 
       int days = nextDate != null
-          ? activity.dates[i].difference(nextDate).inDays
+          ? activity.dates[i].date.difference(nextDate).inDays
           : null;
 
       result.add(
@@ -27,7 +27,8 @@ class ActivityDetailsList extends StatelessWidget {
           key: Key(Uuid().v4()),
           onDismissed: (direction) {
             BlocProvider.of<ActivitiesBloc>(context).add(
-              ActivityDeletedDate(this.activity.id, this.activity.dates[i]),
+              ActivityDeletedDate(
+                  this.activity.id, this.activity.dates[i].date),
             );
           },
           confirmDismiss: (direction) {
@@ -89,7 +90,8 @@ class ActivityDetailsList extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormat('dd/MM/y HH:mm').format(activity.dates[i]),
+                          DateFormat('dd/MM/y HH:mm')
+                              .format(activity.dates[i].date),
                           style: TextStyle(fontSize: 18),
                         ),
                       ],

@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class DatabaseHelper {
-  final int _version = 1;
+  final int _version = 2;
   final String _name = "DaysWithoutDB.db";
 
   Map<int, List<String>> _migrations = {
@@ -12,6 +12,9 @@ class DatabaseHelper {
       "CREATE TABLE activities_dates(activity_id STRING NOT NULL, activity_date INT NOT NULL)", // create dates table
       "CREATE TABLE user_preferences(name STRING NOT NULL, value INT NOT NULL)", // create user preferences table
     ],
+    2: [
+      "ALTER TABLE activities_dates ADD COLUMN activity_comment STRING NULL",
+    ]
   };
 
   Database _database;
@@ -37,6 +40,7 @@ class DatabaseHelper {
           }
         }
       },
+
       /// if the database exists but the version of the database is different
       /// from the version defined in parameter, onUpgrade will execute all sql requests greater than the old version
       onUpgrade: (db, oldVersion, newVersion) async {
