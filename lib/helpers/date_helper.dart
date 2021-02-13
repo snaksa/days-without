@@ -19,7 +19,7 @@ class DateHelper {
       passed.add('${seconds < 10 ? 0 : ""}${seconds}s');
     }
 
-    return passed.join(' ');
+    return passed.isEmpty ? '-' : passed.join(' ');
   }
 
   static String convertTimeToString(int hour, int minute) {

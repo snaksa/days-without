@@ -1,5 +1,6 @@
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/data/models/activity_date.dart';
+import 'package:days_without/data/models/activity_motivation.dart';
 import 'package:days_without/data/repositories/database_helper.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -11,7 +12,10 @@ class ActivityRepository {
   Future<List<Activity>> list() async {
     Database database = await this._db.database;
     List<Map<String, dynamic>> list = await database.rawQuery(
-        'SELECT * FROM activities a LEFT JOIN activities_dates d ON a.id = d.activity_id');
+      'SELECT * ' +
+          'FROM activities a ' +
+          'LEFT JOIN activities_dates d ON a.id = d.activity_id ',
+    );
     Map<String, Activity> data = {};
 
     list.forEach((element) {
@@ -29,6 +33,30 @@ class ActivityRepository {
             element['activity_id'], parsedDate, element['activity_comment']);
         activity.addDate(date);
       }
+
+      if (element['motivation_id'] != null) {
+        ActivityMotivation motivation = ActivityMotivation(
+          element['motivation_id'],
+          activity.id,
+          element['activity_motivation'],
+        );
+
+        activity.addMotivation(motivation);
+      }
+
+      data[activity.id] = activity;
+    });
+
+    List<Map<String, dynamic>> motivations =
+        await database.rawQuery('SELECT * FROM activities_motivation m');
+    motivations.forEach((element) {
+      if (!data.containsKey(element['activity_id'].toString())) {
+        return;
+      }
+
+      Activity activity = data[element['activity_id']];
+      activity.addMotivation(ActivityMotivation(
+          element['id'], activity.id, element['activity_motivation']));
 
       data[activity.id] = activity;
     });
@@ -76,7 +104,6 @@ class ActivityRepository {
 
   Future<void> addDate(Activity activity, DateTime date, String comment) async {
     Database database = await this._db.database;
-    print(date.millisecondsSinceEpoch ~/ 1000);
     await database.insert(
       'activities_dates',
       {
@@ -89,11 +116,42 @@ class ActivityRepository {
 
   Future<void> deleteDate(Activity activity, DateTime date) async {
     Database database = await this._db.database;
-    print(date.millisecondsSinceEpoch ~/ 1000);
     await database.delete(
       'activities_dates',
       where: "activity_id = ? AND activity_date = ?",
       whereArgs: [activity.id, date.millisecondsSinceEpoch ~/ 1000],
+    );
+  }
+
+  Future<void> addMotivation(
+      Activity activity, String id, String motivation) async {
+    Database database = await this._db.database;
+    await database.insert(
+      'activities_motivation',
+      {
+        'id': id,
+        'activity_id': activity.id,
+        'activity_motivation': motivation,
+      },
+    );
+  }
+
+  Future<void> updateMotivation(ActivityMotivation motivation) async {
+    Database database = await this._db.database;
+    await database.update(
+      'activities_motivation',
+      motivation.toMap(),
+      where: "id = ?",
+      whereArgs: [motivation.id],
+    );
+  }
+
+  Future<void> deleteMotivation(Activity activity, String id) async {
+    Database database = await this._db.database;
+    await database.delete(
+      'activities_motivation',
+      where: "id = ?",
+      whereArgs: [id],
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:days_without/bloc/activities/index.dart';
 import 'package:days_without/presentation/common/no_records.dart';
-import 'package:days_without/presentation/common/section_title.dart';
 import 'package:days_without/presentation/components/activity_form.dart';
 import 'package:days_without/presentation/components/activity_tile/activity_tile.dart';
 import 'package:days_without/presentation/components/loader.dart';

@@ -4,6 +4,7 @@ import 'package:days_without/bloc/activities/activities_event.dart';
 import 'package:days_without/bloc/activities/activities_state.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/data/models/activity_date.dart';
+import 'package:days_without/data/models/activity_motivation.dart';
 import 'package:days_without/data/repositories/activity_repository.dart';
 
 class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
@@ -25,6 +26,12 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
       yield* _mapActivityAddDateToState(event);
     } else if (event is ActivityDeletedDate) {
       yield* _mapActivityDeletedDateToState(event);
+    } else if (event is ActivityAddMotivation) {
+      yield* _mapActivityAddMotivationToState(event);
+    } else if (event is ActivityMotivationUpdated) {
+      yield* _mapActivityMotivationUpdatedToState(event);
+    } else if (event is ActivityDeletedMotivation) {
+      yield* _mapActivityDeletedMotivationToState(event);
     }
   }
 
@@ -121,6 +128,81 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
       ).toList();
 
       yield ActivitiesDeleteDateSuccess();
+      yield ActivitiesLoadSuccess(updatedActivities);
+    }
+  }
+
+  Stream<ActivitiesState> _mapActivityAddMotivationToState(
+    ActivityAddMotivation event,
+  ) async* {
+    if (state is ActivitiesLoadSuccess) {
+      yield ActivitiesLoadInProgress();
+      final List<Activity> updatedActivities =
+          (state as ActivitiesLoadSuccess).activities.map(
+        (activity) {
+          if (activity.id == event.activityId) {
+            activity.addMotivation(
+                ActivityMotivation(event.id, activity.id, event.motivation));
+            this.repository.addMotivation(activity, event.id, event.motivation);
+            return activity;
+          }
+
+          return activity;
+        },
+      ).toList();
+
+      yield ActivitiesAddMotivationSuccess();
+      yield ActivitiesLoadSuccess(updatedActivities);
+    }
+  }
+
+  Stream<ActivitiesState> _mapActivityMotivationUpdatedToState(
+      ActivityMotivationUpdated event) async* {
+    if (state is ActivitiesLoadSuccess) {
+      final List<Activity> updatedActivities =
+          (state as ActivitiesLoadSuccess).activities.map((activity) {
+        if (activity.id == event.motivation.activityId) {
+          List<ActivityMotivation> motivations =
+              activity.motivations.map((ActivityMotivation motivation) {
+            if (motivation.id == event.motivation.id) {
+              return event.motivation;
+            }
+
+            return motivation;
+          }).toList();
+
+          return activity.copyWith(motivations: motivations);
+        }
+
+        return activity;
+      }).toList();
+
+      yield ActivitiesUpdatedMotivationSuccess();
+      yield ActivitiesLoadSuccess(updatedActivities);
+
+      this.repository.updateMotivation(event.motivation);
+    }
+  }
+
+  Stream<ActivitiesState> _mapActivityDeletedMotivationToState(
+    ActivityDeletedMotivation event,
+  ) async* {
+    if (state is ActivitiesLoadSuccess) {
+      yield ActivitiesLoadInProgress();
+      final List<Activity> updatedActivities =
+          (state as ActivitiesLoadSuccess).activities.map(
+        (activity) {
+          if (activity.id == event.activityId) {
+            activity.removeMotivation(event.id);
+            this.repository.deleteMotivation(activity, event.id);
+            return activity;
+          }
+
+          return activity;
+        },
+      ).toList();
+
+      yield ActivitiesDeleteMotivationSuccess();
       yield ActivitiesLoadSuccess(updatedActivities);
     }
   }

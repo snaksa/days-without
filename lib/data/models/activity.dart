@@ -1,4 +1,5 @@
 import 'package:days_without/data/models/activity_date.dart';
+import 'package:days_without/data/models/activity_motivation.dart';
 import 'package:equatable/equatable.dart';
 
 class Activity extends Equatable {
@@ -7,33 +8,45 @@ class Activity extends Equatable {
   final int goal;
   final int category;
   final List<ActivityDate> dates;
+  final List<ActivityMotivation> motivations;
 
-  Activity({this.id, this.name, this.goal, this.category, this.dates}) {
+  Activity({
+    this.id,
+    this.name,
+    this.goal,
+    this.category,
+    this.dates,
+    this.motivations,
+  }) {
     this._sortDates();
   }
 
   factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
-        id: map['id'] ?? 0,
-        name: map['name'] ?? '',
-        goal: map['goal'] ?? 0,
-        category: map['category'] ?? 0,
-        dates: []);
+      id: map['id'] ?? 0,
+      name: map['name'] ?? '',
+      goal: map['goal'] ?? 0,
+      category: map['category'] ?? 0,
+      dates: [],
+      motivations: [],
+    );
   }
 
   @override
-  List<Object> get props => [id, name, goal, category, dates];
+  List<Object> get props => [id, name, goal, category, dates, motivations];
 
   @override
   bool get stringify => true;
 
-  Activity copyWith({id, name, goal, category, dates}) {
+  Activity copyWith({id, name, goal, category, dates, motivations}) {
     return Activity(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        goal: goal ?? this.goal,
-        category: category ?? this.category,
-        dates: dates ?? this.dates);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      goal: goal ?? this.goal,
+      category: category ?? this.category,
+      dates: dates ?? this.dates,
+      motivations: motivations ?? this.motivations,
+    );
   }
 
   int get days {
@@ -63,6 +76,20 @@ class Activity extends Equatable {
     this.dates.removeWhere((element) =>
         element.date.millisecondsSinceEpoch == date.millisecondsSinceEpoch);
     this._sortDates();
+
+    return this;
+  }
+
+  Activity addMotivation(ActivityMotivation motivation) {
+    this.motivations.add(motivation);
+
+    return this;
+  }
+
+  Activity removeMotivation(String id) {
+    this
+        .motivations
+        .removeWhere((ActivityMotivation motivation) => motivation.id == id);
 
     return this;
   }

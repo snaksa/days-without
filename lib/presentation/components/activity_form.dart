@@ -108,6 +108,7 @@ class _ActivityEditState extends State<ActivityEdit> {
               goal: 7,
               category: int.parse(this.categoryController.text),
               dates: [],
+              motivations: [],
             ),
           ),
         );

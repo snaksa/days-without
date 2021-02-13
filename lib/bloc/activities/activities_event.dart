@@ -1,4 +1,5 @@
 import 'package:days_without/data/models/activity.dart';
+import 'package:days_without/data/models/activity_motivation.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ActivitiesEvent extends Equatable {
@@ -66,7 +67,7 @@ class ActivityAddDate extends ActivitiesEvent {
       'ActivityAddDate { addDate: ${this.id}, ${this.date}, ${this.comment} }';
 }
 
-// Add date
+// Delete date
 class ActivityDeletedDate extends ActivitiesEvent {
   final String id;
   final DateTime date;
@@ -77,5 +78,51 @@ class ActivityDeletedDate extends ActivitiesEvent {
   List<Object> get props => [this.id, this.date];
 
   @override
-  String toString() => 'ActivityAddDate { addDate: ${this.id}, ${this.date} }';
+  String toString() =>
+      'ActivityDeletedDate { deleteDate: ${this.id}, ${this.date} }';
+}
+
+// Add motivation
+class ActivityAddMotivation extends ActivitiesEvent {
+  final String id;
+  final String activityId;
+  final String motivation;
+
+  const ActivityAddMotivation(this.id, this.activityId, this.motivation);
+
+  @override
+  List<Object> get props => [this.id, this.activityId, this.motivation];
+
+  @override
+  String toString() =>
+      'ActivityAddMotivation { deleteMotivation: ${this.id}, ${this.activityId}, ${this.motivation} }';
+}
+
+// Updated
+class ActivityMotivationUpdated extends ActivitiesEvent {
+  final ActivityMotivation motivation;
+
+  const ActivityMotivationUpdated(this.motivation);
+
+  @override
+  List<Object> get props => [this.motivation];
+
+  @override
+  String toString() =>
+      'ActivityMotivationUpdated { updatedMotivation: ${this.motivation} }';
+}
+
+// Delete motivation
+class ActivityDeletedMotivation extends ActivitiesEvent {
+  final String id;
+  final String activityId;
+
+  const ActivityDeletedMotivation(this.id, this.activityId);
+
+  @override
+  List<Object> get props => [this.id];
+
+  @override
+  String toString() =>
+      'ActivityDeletedMotivation { deleteMotivation: ${this.id} }';
 }

@@ -1,6 +1,7 @@
 import 'package:days_without/bloc/activities/index.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/presentation/components/loader.dart';
+import 'package:days_without/presentation/screens/activity_screen/tabs/motivation/motivation.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/overview/overview.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/stats/stats.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
     switch (this.currentIndex) {
       case 0:
         return ActivityOverviewTab(this._activity);
+      case 1:
+        return ActivityMotivationTab(this._activity);
       case 2:
         return ActivityStatsTab(this._activity);
       default:

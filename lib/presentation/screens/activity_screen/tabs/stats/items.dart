@@ -71,7 +71,7 @@ final List<Map<String, dynamic>> stats = [
           }
         }
       }
-      print(minDuration);
+
       return DateHelper.convertDurationToString(minDuration);
     }
   },

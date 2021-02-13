@@ -41,6 +41,21 @@ class ActivitiesDeleteDateSuccess extends ActivitiesNotification {
   ActivitiesDeleteDateSuccess() : super('Entry deleted');
 }
 
+// Add New Motivation Success
+class ActivitiesAddMotivationSuccess extends ActivitiesNotification {
+  ActivitiesAddMotivationSuccess() : super('Motivation added');
+}
+
+// UpdateMotivation Success
+class ActivitiesUpdatedMotivationSuccess extends ActivitiesNotification {
+  ActivitiesUpdatedMotivationSuccess() : super('Motivation updated');
+}
+
+// Delete Date Success
+class ActivitiesDeleteMotivationSuccess extends ActivitiesNotification {
+  ActivitiesDeleteMotivationSuccess() : super('Motivation deleted');
+}
+
 // Successful
 class ActivitiesLoadSuccess extends ActivitiesState {
   final List<Activity> activities;

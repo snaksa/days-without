@@ -13,7 +13,8 @@ class DatabaseHelper {
       "CREATE TABLE user_preferences(name STRING NOT NULL, value INT NOT NULL)", // create user preferences table
     ],
     2: [
-      "ALTER TABLE activities_dates ADD COLUMN activity_comment STRING NULL",
+      "ALTER TABLE activities_dates ADD COLUMN activity_comment STRING NULL", // add comment column
+      "CREATE TABLE activities_motivation(id STRING NOT NULL, activity_id STRING NOT NULL, activity_motivation STRING NOT NULL)", // create motivation table
     ]
   };
 
