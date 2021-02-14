@@ -27,7 +27,9 @@ class TrophyItem extends StatelessWidget {
           children: [
             Image.asset(
               'assets/images/trophy.png',
-              color: this.trophy.duration > duration ? Colors.grey : null,
+              color: this.trophy.duration > duration || duration.inSeconds == 0
+                  ? Colors.grey
+                  : null,
               height: 100,
             ),
             SizedBox(width: 16),
