@@ -4,6 +4,7 @@ import 'package:days_without/presentation/components/loader.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/motivation/motivation.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/overview/overview.dart';
 import 'package:days_without/presentation/screens/activity_screen/tabs/stats/stats.dart';
+import 'package:days_without/presentation/screens/activity_screen/tabs/trophies/trophies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,6 +37,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
         return ActivityMotivationTab(this._activity);
       case 2:
         return ActivityStatsTab(this._activity);
+      case 3:
+        return TrophiesTab(this._activity);
       default:
         return ActivityOverviewTab(this._activity);
     }
