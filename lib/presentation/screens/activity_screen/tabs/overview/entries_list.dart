@@ -36,7 +36,7 @@ class EntriesList extends StatelessWidget {
             ),
             ...this
                 .activity
-                .dates
+                .datesInc
                 .where(
                   (ActivityDate d) => (date.day == d.date.day &&
                       date.month == d.date.month &&

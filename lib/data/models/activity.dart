@@ -57,6 +57,17 @@ class Activity extends Equatable {
     return 0;
   }
 
+  List<ActivityDate> get datesInc {
+    List<ActivityDate> datesInc = [...this.dates];
+
+    datesInc.sort(
+      (ActivityDate d1, ActivityDate d2) =>
+          d1.date.difference(d2.date).inSeconds > 0 ? 1 : -1,
+    );
+
+    return datesInc;
+  }
+
   Duration get duration {
     if (this.dates.length > 0) {
       return DateTime.now().difference(this.dates.first.date);
