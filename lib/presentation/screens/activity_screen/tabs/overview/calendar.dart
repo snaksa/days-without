@@ -26,6 +26,7 @@ class Calendar extends StatelessWidget {
       ),
       thisMonthDayBorderColor: Colors.grey,
       todayButtonColor: Theme.of(context).accentColor.withOpacity(0.2),
+      todayTextStyle: TextStyle(color: Colors.black),
       weekdayTextStyle: TextStyle(color: Theme.of(context).accentColor),
       height: 400.0,
       daysHaveCircularBorder: null,
