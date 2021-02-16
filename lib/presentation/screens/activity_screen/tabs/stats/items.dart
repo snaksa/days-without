@@ -95,7 +95,7 @@ final List<Map<String, dynamic>> stats = [
       }
 
       int averageDurationSeconds =
-          (totalDuration.inSeconds / datesWithToday.length).ceil();
+          (totalDuration.inSeconds / (datesWithToday.length - 1)).ceil();
 
       return DateHelper.convertDurationToString(
           Duration(seconds: averageDurationSeconds));
