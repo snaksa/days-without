@@ -1,4 +1,5 @@
 import 'package:days_without/bloc/activities/index.dart';
+import 'package:days_without/bloc/notifications/index.dart';
 import 'package:days_without/data/models/activity.dart';
 import 'package:days_without/helpers/category_helper.dart';
 import 'package:days_without/helpers/date_helper.dart';
@@ -98,6 +99,30 @@ class _ActivityEditState extends State<ActivityEdit> {
           ),
         );
       } else {
+        List<String> splitDate = this.dateController.text.split('\\');
+        List<String> splitTime = this.timeController.text.split(':');
+        DateTime dateToAdd = DateTime(
+          int.parse(splitDate[2]),
+          int.parse(splitDate[1]),
+          int.parse(splitDate[0]),
+          int.parse(splitTime[0]),
+          int.parse(
+            splitTime[1],
+          ),
+        );
+
+        DateTime now = DateTime.now();
+        if (now.difference(dateToAdd).isNegative) {
+          BlocProvider.of<NotificationsBloc>(context).add(
+            NotificationSend(
+              'The date can not be in the future',
+              now.microsecondsSinceEpoch,
+            ),
+          );
+
+          return;
+        }
+
         String activityId = Uuid().v4();
 
         BlocProvider.of<ActivitiesBloc>(context).add(
@@ -112,15 +137,6 @@ class _ActivityEditState extends State<ActivityEdit> {
             ),
           ),
         );
-
-        List<String> splitDate = this.dateController.text.split('\\');
-        List<String> splitTime = this.timeController.text.split(':');
-        DateTime dateToAdd = DateTime(
-            int.parse(splitDate[2]),
-            int.parse(splitDate[1]),
-            int.parse(splitDate[0]),
-            int.parse(splitTime[0]),
-            int.parse(splitTime[1]));
 
         BlocProvider.of<ActivitiesBloc>(context).add(
           ActivityAddDate(activityId, dateToAdd, null),
