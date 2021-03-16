@@ -1,11 +1,13 @@
 import 'package:days_without/data/models/trophy.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TrophyItem extends StatelessWidget {
   final Trophy trophy;
   final Duration duration;
+  final Duration latestDuration;
 
-  TrophyItem(this.trophy, this.duration);
+  TrophyItem(this.trophy, this.duration, this.latestDuration);
 
   double get completionPercentage {
     if (this.trophy.duration.inSeconds == 0) {
@@ -13,6 +15,12 @@ class TrophyItem extends StatelessWidget {
     }
     double percentage =
         (this.duration.inSeconds / this.trophy.duration.inSeconds);
+
+    percentage = percentage < 1 ? percentage : 1;
+    if (percentage != 1) {
+      percentage =
+          (this.latestDuration.inSeconds / this.trophy.duration.inSeconds);
+    }
 
     return percentage < 1 ? percentage : 1;
   }
@@ -72,6 +80,15 @@ class TrophyItem extends StatelessWidget {
                           );
                         },
                       ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      this.completionPercentage < 1
+                          ? DateFormat.yMMMd().format(DateTime.now().add(
+                              Duration(
+                                  seconds: this.trophy.duration.inSeconds -
+                                      this.latestDuration.inSeconds)))
+                          : 'Achieved!',
                     ),
                   ],
                 ),

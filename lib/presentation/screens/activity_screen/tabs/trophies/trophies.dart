@@ -13,6 +13,7 @@ class TrophiesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration latestDuration;
     Duration maxDuration =
         Duration(seconds: this.activity.dates.length > 0 ? 1 : 0);
 
@@ -23,9 +24,14 @@ class TrophiesTab extends StatelessWidget {
         ActivityDate('0', DateTime.now(), null),
         ...this.activity.dates
       ];
+
       for (int i = 1; i < datesWithToday.length; i++) {
         Duration datesDifference =
             datesWithToday[i - 1].date.difference(datesWithToday[i].date);
+
+        if (latestDuration == null) {
+          latestDuration = datesDifference;
+        }
 
         if (datesDifference > maxDuration) {
           maxDuration = datesDifference;
@@ -44,7 +50,11 @@ class TrophiesTab extends StatelessWidget {
             children: [
               ...TrophyHelper.trophies
                   .map(
-                    (Trophy item) => TrophyItem(item, maxDuration),
+                    (Trophy item) => TrophyItem(
+                      item,
+                      maxDuration,
+                      latestDuration,
+                    ),
                   )
                   .toList(),
             ],
