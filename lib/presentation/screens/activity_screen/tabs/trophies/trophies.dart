@@ -19,6 +19,7 @@ class TrophiesTab extends StatelessWidget {
 
     if (this.activity.dates.length == 1) {
       maxDuration = DateTime.now().difference(this.activity.dates.first.date);
+      latestDuration = maxDuration;
     } else if (this.activity.dates.length > 1) {
       List<ActivityDate> datesWithToday = [
         ActivityDate('0', DateTime.now(), null),
