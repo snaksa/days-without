@@ -1,4 +1,5 @@
 import 'package:days_without/bloc/activities/index.dart';
+import 'package:days_without/bloc/notifications/index.dart';
 import 'package:days_without/helpers/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,6 +63,18 @@ class _EntryFormScreenState extends State<EntryFormScreen> {
     List<String> split = this.timeController.text.split(':');
     DateTime dateToAdd = DateTime(date.year, date.month, date.day,
         int.parse(split[0]), int.parse(split[1]), 0);
+
+    DateTime now = DateTime.now();
+    if (now.difference(dateToAdd).isNegative) {
+      BlocProvider.of<NotificationsBloc>(context).add(
+        NotificationSend(
+          'The date can not be in the future',
+          now.microsecondsSinceEpoch,
+        ),
+      );
+
+      return;
+    }
 
     String comment = this.commentController.text.length > 0
         ? this.commentController.text
