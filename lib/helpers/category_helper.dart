@@ -16,6 +16,8 @@ class CategoryHelper {
     Category(10, 'TV', Icons.tv, Colors.green),
     Category(11, 'Shopping', Icons.shopping_bag_rounded, Colors.blue),
     Category(12, 'Social Networks', Icons.phone_android, Colors.amber),
+    Category(14, 'Adult Entertainment', Icons.live_tv, Colors.orange),
+    Category(15, 'Intimacy', Icons.favorite, Colors.red),
     Category(13, 'Other', Icons.autorenew, Colors.cyan),
   ];
 

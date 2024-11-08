@@ -34,6 +34,7 @@ class _ActivityTileState extends State<ActivityTile> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ActivityTileHeader(widget.activity),
                           ActivityPopupMenu(widget.activity),

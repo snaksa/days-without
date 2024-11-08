@@ -13,6 +13,8 @@ class ActivityTileHeader extends StatelessWidget {
     Category category = CategoryHelper.findCategory(this.activity.category);
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           category.icon,
@@ -22,11 +24,14 @@ class ActivityTileHeader extends StatelessWidget {
         SizedBox(
           width: 10,
         ),
-        Text(
-          this.activity.name,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        SizedBox(
+          width: 200,
+          child: Text(
+            this.activity.name,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
