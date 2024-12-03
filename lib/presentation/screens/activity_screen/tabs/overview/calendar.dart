@@ -30,6 +30,7 @@ class Calendar extends StatelessWidget {
       weekdayTextStyle: TextStyle(color: Theme.of(context).accentColor),
       height: 400.0,
       daysHaveCircularBorder: null,
+      minSelectedDate: DateTime(1980),
       customDayBuilder: (
         bool isSelectable,
         int index,
